@@ -1,0 +1,105 @@
+﻿#include "/Includes/MarchTables.compute"
+#include "/Includes/Basics.compute"
+#pragma kernel Polygonize
+
+struct Triangle {
+    float3 v1;
+    float3 v2;
+    float3 v3;
+    int chunk;
+};
+
+AppendStructuredBuffer<Triangle> triangles;
+float isolevel;
+uint chunkSizeX;
+uint chunkSizeY;
+uint chunkSizeZ;
+uint numChunksX;
+uint numChunksY;
+uint numChunksZ;
+
+float3 interpolateVerts(float4 v1, float4 v2) {
+    float t = (isolevel - v1.w) / (v2.w - v1.w);
+    return v1.xyz + t * (v2.xyz - v1.xyz);
+}
+
+//takes in the top back left corner of a cube and returns whichever chunk it belongs to
+int chunkIndexFromCoord(uint x, uint y, uint z) {
+    int cx = (int)floor(x / (chunkSizeX - 1));
+    int cy = (int)floor(y / (chunkSizeY - 1));
+    int cz = (int)floor(z / (chunkSizeZ - 1));
+    return cz * numChunksX * numChunksY + cy * numChunksX + cx;
+}
+
+[numthreads(4,4,2)]
+void Polygonize (uint3 id : SV_DispatchThreadID) {
+    // Stop one point before the end because voxel includes neighbouring points
+    if (id.x >= sizeX - 1 || id.y >= sizeY - 1 || id.z >= sizeZ - 1) {
+        return;
+    }
+
+    // 8 corners of the current cube
+    float4 cubeCorners[8] = {
+        points[indexFromCoord(id.x, id.y, id.z)],
+        points[indexFromCoord(id.x + 1, id.y, id.z)],
+        points[indexFromCoord(id.x + 1, id.y, id.z + 1)],
+        points[indexFromCoord(id.x, id.y, id.z + 1)],
+        points[indexFromCoord(id.x, id.y + 1, id.z)],
+        points[indexFromCoord(id.x + 1, id.y + 1, id.z)],
+        points[indexFromCoord(id.x + 1, id.y + 1, id.z + 1)],
+        points[indexFromCoord(id.x, id.y + 1, id.z + 1)]
+    };
+
+    //Determine the index into the edge table which tells us which vertices are inside of the surface
+    int cubeindex = 0;
+    if (cubeCorners[0].w < isolevel) {
+        cubeindex |= 1;
+    }
+    if (cubeCorners[1].w < isolevel) {
+        cubeindex |= 2;
+    }
+    if (cubeCorners[2].w < isolevel) {
+        cubeindex |= 4;
+    }
+    if (cubeCorners[3].w < isolevel) {
+        cubeindex |= 8;
+    }
+    if (cubeCorners[4].w < isolevel) {
+        cubeindex |= 16;
+    }
+    if (cubeCorners[5].w < isolevel) {
+        cubeindex |= 32;
+    }
+    if (cubeCorners[6].w < isolevel) {
+        cubeindex |= 64;
+    }
+    if (cubeCorners[7].w < isolevel) {
+        cubeindex |= 128;
+    }
+
+    //Cube is entirely in/out of the surface
+    if (edgeTable[cubeindex] == 0 || edgeTable[cubeindex] == 255) {
+        return;
+    }
+
+    // Create triangles for current cube configuration
+    for (int i = 0; triangulation[cubeindex][i] != -1; i += 3) {
+        // Get indices of corner points A and B for each of the three edges
+        // of the cube that need to be joined to form the triangle.
+        int a0 = cornerIndexAFromEdge[triangulation[cubeindex][i]];
+        int b0 = cornerIndexBFromEdge[triangulation[cubeindex][i]];
+
+        int a1 = cornerIndexAFromEdge[triangulation[cubeindex][i + 1]];
+        int b1 = cornerIndexBFromEdge[triangulation[cubeindex][i + 1]];
+
+        int a2 = cornerIndexAFromEdge[triangulation[cubeindex][i + 2]];
+        int b2 = cornerIndexBFromEdge[triangulation[cubeindex][i + 2]];
+
+        Triangle tri;
+        tri.v3 = interpolateVerts(cubeCorners[a0], cubeCorners[b0]);
+        tri.v2 = interpolateVerts(cubeCorners[a1], cubeCorners[b1]);
+        tri.v1 = interpolateVerts(cubeCorners[a2], cubeCorners[b2]);
+        tri.chunk = chunkIndexFromCoord(id.x, id.y, id.z);
+        triangles.Append(tri);
+    }
+}

@@ -1,0 +1,11 @@
+﻿RWStructuredBuffer<float4> points;
+
+uint sizeX;
+uint sizeY;
+uint sizeZ;
+float4 center;
+float gridSize;
+
+int indexFromCoord(int x, int y, int z) {
+	return x + y * sizeX + z * sizeX * sizeY;
+}
