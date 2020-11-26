@@ -1,2 +1,31 @@
 Base path: 'C:/Program Files/Unity/Hub/Editor/2019.4.3f1/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2019.4.3f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1132 outsize=4810 ok=1
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1132 outsize=4798 ok=1
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1132 outsize=4810 ok=1
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: preprocessCompute
+  insize=2185 outsize=2184 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at OverthoughtTerrain.compute(54): syntax error: unexpected token ';'
+  error: 2 plat 4 at OverthoughtTerrain.compute(56): syntax error: unexpected token ')'
+  error: 2 plat 4 at OverthoughtTerrain.compute(60): undeclared identifier 'noise'
+  api=4 insize=2184 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1132 outsize=4810 ok=1
+Cmd: preprocessCompute
+  insize=2186 outsize=2185 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2185 outsize=9554 ok=1
