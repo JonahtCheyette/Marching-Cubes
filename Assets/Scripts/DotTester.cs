@@ -7,7 +7,7 @@
 //where we aren't passing in all the necessary values because they aren't declared in this class. I would like to avoid having to declare and set new variables
 //for every new kind of density function we have
 
-/*
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -84,11 +84,13 @@ public class DotTester : MonoBehaviour {
     }
 
     private Vector4[] GenerateValues() {
+        /*
         if(generationType == GenerationType.noise) {
             return DensityFunction.GenerateNoiseValues(size, gridSize, center);
         } else {
             return new Vector4[0];
-        }
+        }*/
+        return new Vector4[size.x * size.y * size.z];
     }
 
     private void SetMaterialValues() {
@@ -132,4 +134,4 @@ public class DotTester : MonoBehaviour {
             }
         }
     }
-}*/
+}

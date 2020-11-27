@@ -15,7 +15,6 @@ public static class ChunkGenerator {
     public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, Vector3Int chunkSize, Vector3 center, float gridSize, float isoLevel) {
         SetShaderValues(terrainSize, chunkSize, isoLevel);
 
-        
         GenerateTriangles(values, terrainSize, chunkSize);
 
         return CreateTerrainChunks(terrainSize, chunkSize, center, gridSize);
@@ -72,6 +71,7 @@ public static class ChunkGenerator {
                     int chunkIndex = (int)(x + y * numChunks.x + z * numChunks.x * numChunks.y);
 
                     Vector3 chunkCenter = center + gridSize * (new Vector3(cornerX, cornerY, cornerZ) + ((chunkSizeCorrected - Vector3.one) / 2f) - ((new Vector3(terrainSize.x, terrainSize.y, terrainSize.z) - Vector3.one) / 2f));
+
                     List<Vector3> chunkVertices = new List<Vector3>();
                     List<int> chunkTriangles = new List<int>();
                     

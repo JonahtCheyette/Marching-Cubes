@@ -2,7 +2,7 @@
 using UnityEditor;
 
 //says to use this editor for the dotTester Script
-/*
+
 [CustomEditor(typeof(DotTester))]
 public class DotTesterEditor : Editor {
 
@@ -16,5 +16,5 @@ public class DotTesterEditor : Editor {
             dotTester.TestWithDots();
         }
     }
-}*/
+}
 //Dot tester script currently not active

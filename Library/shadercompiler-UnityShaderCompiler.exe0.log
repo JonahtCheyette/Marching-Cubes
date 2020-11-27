@@ -29,3 +29,126 @@ Cmd: preprocessCompute
   insize=2186 outsize=2185 ok=1
 Cmd: compileComputeKernel
   api=4 insize=2185 outsize=9554 ok=1
+Cmd: preprocessCompute
+  insize=3560 outsize=3559 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3559 outsize=69891 ok=1
+Cmd: preprocessCompute
+  insize=3661 outsize=3660 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3660 outsize=70275 ok=1
+Cmd: preprocessCompute
+  insize=3548 outsize=3547 ok=1
+Cmd: preprocessCompute
+  insize=3579 outsize=3578 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3578 outsize=69807 ok=1
+Cmd: preprocessCompute
+  insize=3702 outsize=3701 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(81): syntax error: unexpected token '='
+  error: 2 plat 4 at Polygonize.compute(86): syntax error: unexpected token 'if'
+  api=4 insize=3701 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3703 outsize=3702 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(81): syntax error: unexpected token '='
+  error: 2 plat 4 at Polygonize.compute(86): syntax error: unexpected token 'if'
+  api=4 insize=3702 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3705 outsize=3704 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(81): syntax error: unexpected token '='
+  error: 2 plat 4 at Polygonize.compute(87): syntax error: unexpected token 'if'
+  api=4 insize=3704 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3706 outsize=3705 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(82): RWStructuredBuffer<int> object does not have method 'Append'
+  api=4 insize=3705 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3703 outsize=3702 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3702 outsize=70147 ok=1
+Cmd: preprocessCompute
+  insize=4017 outsize=4016 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4016 outsize=70680 ok=1
+Cmd: preprocessCompute
+  insize=3943 outsize=3942 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3942 outsize=70548 ok=1
+Cmd: preprocessCompute
+  insize=4017 outsize=4016 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4016 outsize=70388 ok=1
+Cmd: preprocessCompute
+  insize=4017 outsize=4016 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4016 outsize=70472 ok=1
+Cmd: preprocessCompute
+  insize=4019 outsize=4018 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4018 outsize=70119 ok=1
+Cmd: preprocessCompute
+  insize=4019 outsize=4018 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4018 outsize=70119 ok=1
+Cmd: preprocessCompute
+  insize=4019 outsize=4018 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4018 outsize=70119 ok=1
+Cmd: preprocessCompute
+  insize=4021 outsize=4020 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4020 outsize=70424 ok=1
+Cmd: preprocessCompute
+  insize=4018 outsize=4017 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4017 outsize=70464 ok=1
+Cmd: preprocessCompute
+  insize=3735 outsize=3734 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3734 outsize=70088 ok=1
+Cmd: preprocessCompute
+  insize=3802 outsize=3801 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3801 outsize=70088 ok=1
+Cmd: preprocessCompute
+  insize=3861 outsize=3860 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(91): undeclared identifier 'cubeIndex'
+  api=4 insize=3860 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3861 outsize=3860 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3860 outsize=70180 ok=1
+Cmd: preprocessCompute
+  insize=3857 outsize=3856 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3856 outsize=70180 ok=1
+Cmd: preprocessCompute
+  insize=3952 outsize=3951 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3951 outsize=70232 ok=1
+Cmd: preprocessCompute
+  insize=3857 outsize=3856 ok=1
+Cmd: preprocessCompute
+  insize=3900 outsize=3899 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3899 outsize=70220 ok=1
+Cmd: preprocessCompute
+  insize=20210 outsize=20207 ok=0
+Cmd: preprocessCompute
+  insize=3878 outsize=3877 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at Polygonize.compute(86): undeclared identifier 'edgeTable'
+  api=4 insize=3877 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=3880 outsize=3879 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3879 outsize=70176 ok=1
+Cmd: preprocessCompute
+  insize=3552 outsize=3551 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3551 outsize=69803 ok=1

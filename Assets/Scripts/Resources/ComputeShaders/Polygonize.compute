@@ -38,6 +38,8 @@ void Polygonize (uint3 id : SV_DispatchThreadID) {
         return;
     }
 
+    int testIndex = 0;
+
     // 8 corners of the current cube
     float4 cubeCorners[8] = {
         points[indexFromCoord(id.x, id.y, id.z)],
@@ -78,7 +80,7 @@ void Polygonize (uint3 id : SV_DispatchThreadID) {
     }
 
     //Cube is entirely in/out of the surface
-    if (edgeTable[cubeindex] == 0 || edgeTable[cubeindex] == 255) {
+    if (cubeindex == 0 || cubeindex == 255) {
         return;
     }
 
