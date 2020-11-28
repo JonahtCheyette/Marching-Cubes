@@ -1,25 +1,6 @@
 Base path: 'C:/Program Files/Unity/Hub/Editor/2019.4.3f1/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2019.4.3f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
 Cmd: preprocessCompute
-  insize=1160 outsize=1159 ok=1
+  insize=3800 outsize=3799 ok=1
 Cmd: compileComputeKernel
-  api=4 insize=1159 outsize=944 ok=1
-Cmd: preprocessCompute
-  insize=1161 outsize=1160 ok=1
-Cmd: compileComputeKernel
-  api=4 insize=1160 outsize=944 ok=1
-Cmd: preprocessCompute
-  insize=1172 outsize=1171 ok=1
-Cmd: preprocessCompute
-  insize=1205 outsize=1204 ok=1
-Cmd: compileComputeKernel
-  error: 2 plat 4 at ExpierementalTerrain.compute(25): undeclared identifier 'baseAplitude'
-  api=4 insize=1204 outsize=0 ok=0
-Cmd: preprocessCompute
-  insize=1206 outsize=1205 ok=1
-Cmd: compileComputeKernel
-  api=4 insize=1205 outsize=4883 ok=1
-Cmd: preprocessCompute
-  insize=1322 outsize=1321 ok=1
-Cmd: compileComputeKernel
-  api=4 insize=1321 outsize=5055 ok=1
+  api=4 insize=3799 outsize=69337 ok=1

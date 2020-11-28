@@ -38,9 +38,25 @@ public class HandlerTemplate : MonoBehaviour {
         } else {
             terrainChunkData = ChunkGenerator.Generate(values, terrainSize, chunkSize, center, gridSize, surfaceLevel);
         }
-        ResizeAndCreateChunks();
+
+        CreateChunks();
+        //ResizeAndCreateChunks();
     }
 
+    private void CreateChunks() {
+        for (int i = gameObject.transform.childCount - 1; i >= 0; i--) {
+            DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
+        }
+        chunks.Clear();
+
+        for (int i = 0; i < terrainChunkData.Length; i++) {
+            chunks.Add(new TerrainChunk(terrainChunkData[i], gameObject, meshMaterial));
+        }
+    }
+
+
+    //for potential chunking for an infinite, procedurally generated terrain
+    /*
     private void ResizeAndCreateChunks() {
         //deleting everything if there are unexplained children of the gameobject
         DeleteUnexplainedChildren();
@@ -92,7 +108,7 @@ public class HandlerTemplate : MonoBehaviour {
                 chunks.Add(new TerrainChunk(terrainChunkData[i], gameObject, meshMaterial));
             }
         }
-    }
+    }*/
 
     private void SetIsoLevel() {
         float min = float.MaxValue;

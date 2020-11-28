@@ -10,24 +10,28 @@ public static class ChunkGenerator {
     // Buffer to store count in.
     private static ComputeBuffer countBuffer;
 
-    private static List<Triangle>[] triangles;
+    //private static List<Triangle>[] triangles;
+    private static Triangle[] triangles;
 
     public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, Vector3Int chunkSize, Vector3 center, float gridSize, float isoLevel) {
         SetShaderValues(terrainSize, chunkSize, isoLevel);
 
         GenerateTriangles(values, terrainSize, chunkSize);
 
-        return CreateTerrainChunks(terrainSize, chunkSize, center, gridSize);
+        return CreateTerrainChunks();
     }
 
     private static void GenerateTriangles(Vector4[] values, Vector3Int terrainSize, Vector3Int chunkSize) {
         CreateBuffers(values.Length, terrainSize);
 
-        Vector3 numChunks = new Vector3(Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)), Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)), Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
         SetBufferValues(values);
 
-        TriangleRaw[] trianglesRaw = RunShader(terrainSize);
+        RunShader(terrainSize);
 
+        //for potential chunking for an infinite, procedurally generated terrain
+        /*
+        Vector3 numChunks = new Vector3(Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)), Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)), Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
+        
         triangles = new List<Triangle>[(int)(numChunks.x * numChunks.y * numChunks.z)];
 
         for (int i = 0; i < (int)(numChunks.x * numChunks.y * numChunks.z); i++) {
@@ -36,7 +40,7 @@ public static class ChunkGenerator {
         
         foreach (TriangleRaw rawTriangle in trianglesRaw) {
             triangles[rawTriangle.chunk].Add(rawTriangle.ToTriangle());
-        }
+        }*/
 
         if (!Application.isPlaying) {
             DestroyBuffers();
@@ -44,9 +48,11 @@ public static class ChunkGenerator {
     }
 
     //creates terrainchunks to fill up the specified terrain size
+    //for potential chunking for an infinite, procedurally generated terrain
+    /*
     private static ChunkData[] CreateTerrainChunks(Vector3Int terrainSize, Vector3Int chunkSize, Vector3 center, float gridSize) {
         List<ChunkData> chunks = new List<ChunkData>();
-
+        
         Vector3 numChunks = new Vector3(Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)), Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)), Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
 
         for (int x = 0; x < numChunks.x; x++) {
@@ -89,7 +95,7 @@ public static class ChunkGenerator {
                             } else {
                                 chunkVertices.Add(triangle[i]);
                                 chunkTriangles.Add(chunkVertices.Count - 1);
-                            }*/
+                            }
                         }
                     }
 
@@ -97,18 +103,55 @@ public static class ChunkGenerator {
                 }
             }
         }
+        return chunks.ToArray();
+    }*/
+
+    //creates terrainchunks to make the terrain
+    private static ChunkData[] CreateTerrainChunks() {
+        List<ChunkData> chunks = new List<ChunkData>();
+
+        //the number of triangles, divided by the number of triangles in one mesh
+        int numChunks = Mathf.CeilToInt(triangles.Length / 21845f);
+
+        int index = 0;
+        for (int i = 0; i < numChunks; i++) {
+            List<Vector3> chunkVertices = new List<Vector3>();
+            List<int> chunkTriangles = new List<int>();
+            for (int j = index; j < index + 21845; j++) {
+                if (j < triangles.Length) {
+                    for (int k = 0; k < 3; k++) {
+                        chunkVertices.Add(triangles[j][k]);
+                        chunkTriangles.Add(chunkVertices.Count - 1);
+                        //this piece of code is so inefficient, but it gets rid of duplicates. Room for improvement! maybe classify vertices by edge in the polygonizer.
+                        //plus, it leaves seams in the terrain due to lighting errors
+                        /*
+                        if (chunkVertices.Contains(triangle[j][k])) {
+                            chunkTriangles.Add(chunkVertices.IndexOf(triangle[j][k]));
+                        } else {
+                            chunkVertices.Add(triangle[j][k]);
+                            chunkTriangles.Add(chunkVertices.Count - 1);
+                        }*/
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            index += 21845;
+            chunks.Add(new ChunkData(chunkVertices.ToArray(), chunkTriangles.ToArray()));
+        }
 
         return chunks.ToArray();
     }
 
-    private static void CreateBuffers(int numPoints, Vector3Int terrainSize) {;
+    private static void CreateBuffers(int numPoints, Vector3Int terrainSize) {
         if (points == null || !points.IsValid() || points.count != numPoints) {
             points = new ComputeBuffer(numPoints, 16);
         }
 
         int maxNumTriangles = 5 * (terrainSize.x - 1) * (terrainSize.y - 1) * (terrainSize.z - 1);
         if (triangleBuffer == null || !triangleBuffer.IsValid() || triangleBuffer.count != maxNumTriangles) {
-            triangleBuffer = new ComputeBuffer(maxNumTriangles, 40, ComputeBufferType.Append);
+            triangleBuffer = new ComputeBuffer(maxNumTriangles, 36, ComputeBufferType.Append);
         }
 
         if (countBuffer == null || !countBuffer.IsValid()) {
@@ -132,12 +175,12 @@ public static class ChunkGenerator {
         }
     }
 
-    private static  void SetBufferValues(Vector4[] values) {
+    private static void SetBufferValues(Vector4[] values) {
         points.SetData(values);
         triangleBuffer.SetCounterValue(0);
     }
 
-    private static TriangleRaw[] RunShader(Vector3Int terrainSize) {
+    private static void RunShader(Vector3Int terrainSize) {
         int kernel = polygonizer.FindKernel("Polygonize");
         polygonizer.SetBuffer(kernel, "points", points);
         polygonizer.SetBuffer(kernel, "triangles", triangleBuffer);
@@ -151,10 +194,8 @@ public static class ChunkGenerator {
         int[] counter = new int[1] { 0 };
         countBuffer.GetData(counter);
 
-        TriangleRaw[] triangles = new TriangleRaw[counter[0]];
+        triangles = new Triangle[counter[0]];
         triangleBuffer.GetData(triangles, 0, 0, counter[0]);
-
-        return triangles;
     }
 
     //shoudln't be run every frame
@@ -172,6 +213,8 @@ public static class ChunkGenerator {
         }
     }
 
+    //creates terrainchunks to fill up the specified terrain size
+    /*
     private struct TriangleRaw {
 #pragma warning disable 649 // disable unassigned variable warning
         public Vector3 pointA;
@@ -198,7 +241,7 @@ public static class ChunkGenerator {
             tri.pointC = pointC;
             return tri;
         }
-    };
+    };*/
 
     private struct Triangle {
 #pragma warning disable 649 // disable unassigned variable warning

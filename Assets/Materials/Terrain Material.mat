@@ -72,7 +72,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _MinY2: 0.27
-    - _MinY3: 0.52
+    - _MinY3: 0.5
     - _MinY4: 1
     - _MinY5: 3.17
     - _MinY6: 9.36
