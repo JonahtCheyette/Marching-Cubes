@@ -5,6 +5,7 @@ using UnityEngine;
 public static class DensityFunction {
     private static ComputeShader noiseShader = (ComputeShader)Resources.Load("ComputeShaders/NoiseDensity");
     private static ComputeShader overthoughtTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/OverthoughtTerrain");
+    private static ComputeShader expierementalTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/ExpierementalTerrain");
     private static ComputeBuffer points;
     private static Vector4[] values;
 
@@ -71,6 +72,35 @@ public static class DensityFunction {
         overthoughtTerrainShader.SetVectorArray("terrainOffsets", terrainOffsets);
 
         DispatchShader(overthoughtTerrainShader, size);
+
+        if (!Application.isPlaying) {
+            DestroyBuffer();
+        }
+
+        return values;
+    }
+
+    public static Vector4[] GenerateExpierementalTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed, float amplitude, float floorHeight, float floorStrength) {
+        SetupGeneration(expierementalTerrainShader, size, gridSize, center);
+
+        expierementalTerrainShader.SetFloat("scale", scale);
+        expierementalTerrainShader.SetFloat("baseAmplitude", amplitude);
+        expierementalTerrainShader.SetFloat("floorHeight", floorHeight);
+        expierementalTerrainShader.SetFloat("floorStrength", floorStrength);
+
+        Vector4[] octaveOffsets = new Vector4[octaves];
+
+        System.Random rand = new System.Random(seed);
+
+        for (int i = 0; i < octaves; i++) {
+            octaveOffsets[i].x = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].y = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].z = (float)rand.NextDouble() * 200000 - 100000;
+        }
+
+        SetPerlinNoiseValues(expierementalTerrainShader, octaves, persistance, lacunarity, octaveOffsets);
+
+        DispatchShader(expierementalTerrainShader, size);
 
         if (!Application.isPlaying) {
             DestroyBuffer();

@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-//says to use this editor for the NoiseDensityChunkHandler Script
+//says to use this editor for the PureNoiseHandler Script
 [CustomEditor(typeof(PureNoiseHandler))]
 public class PureNoiseHandlerEditor : Editor {
 
     public override void OnInspectorGUI() {
-        //gets the chunkGenerator reference
+        //gets the PureNoiseHandler reference
         PureNoiseHandler pureNoiseHandler = (PureNoiseHandler)target;
         DrawDefaultInspector();
 
-        //generates a chunk
+        //creates a button that calls GenerateChunks when Pressed
         if (GUILayout.Button("Generate")) {
             pureNoiseHandler.GenerateChunks();
         }

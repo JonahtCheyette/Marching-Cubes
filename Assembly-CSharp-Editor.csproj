@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\DotTesterEditor.cs" />
+    <Compile Include="Assets\Editor\ExpierementalTerrainHandlerEditor.cs" />
     <Compile Include="Assets\Editor\OverthoughtTerrainHandlerEditor.cs" />
     <Compile Include="Assets\Editor\PureNoiseHandlerEditor.cs" />
     <Reference Include="UnityEngine">

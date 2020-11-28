@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-//says to use this editor for the NoiseDensityChunkHandler Script
+//says to use this editor for the OverthoughtTerrainHandler Script
 [CustomEditor(typeof(OverthoughtTerrainHandler))]
 public class OverthoughtTerrainHandlerEditor : Editor {
 
     public override void OnInspectorGUI() {
-        //gets the chunkGenerator reference
+        //gets the OverthoughtTerrainHandler reference
         OverthoughtTerrainHandler terrainHandler = (OverthoughtTerrainHandler)target;
         DrawDefaultInspector();
 
-        //generates a chunk
+        //creates a button that calls GenerateChunks when Pressed
         if (GUILayout.Button("Generate")) {
             terrainHandler.GenerateChunks();
         }

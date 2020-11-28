@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ChunkGenerator.cs" />
+    <Compile Include="Assets\Scripts\ChunkHandler Scripts\ExpierementalTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\HandlerTemplate.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\OverthoughtTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\PureNoiseHandler.cs" />
@@ -76,6 +77,7 @@
     <None Include="Assets\Scripts\Resources\ComputeShaders\OverthoughtTerrain.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Noise.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Basics.compute" />
+    <None Include="Assets\Scripts\Resources\ComputeShaders\ExpierementalTerrain.compute" />
     <None Include="Assets\Scripts\Resources\MeshShaders\TerrainShader.shader" />
     <None Include="Assets\Scripts\Resources\MeshShaders\DotShader.shader" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\NoiseDensity.compute" />

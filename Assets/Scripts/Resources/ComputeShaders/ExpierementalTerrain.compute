@@ -1,0 +1,48 @@
+﻿#pragma kernel Generate
+#include "/Includes/Noise.compute"
+#include "/Includes/Basics.compute"
+
+//all the stuff under here will be set from DensityFunction.cs
+float4 octaveOffsets[8];
+float scale;
+int octaves;
+float persistance;
+float lacunarity;
+float baseAmplitude;
+float floorHeight;
+float floorStrength;
+
+[numthreads(4, 4, 2)]
+void Generate(uint3 id : SV_DispatchThreadID) {
+    if (id.x >= sizeX || id.y >= sizeY || id.z >= sizeZ) {
+        return;
+    }
+
+    float noiseValue = 0;
+    float3 halfSize = float3((float)(sizeX - 1), (float)(sizeY - 1), (float)(sizeZ - 1)) / 2;
+
+    float3 pos = (float3(id.x, id.y, id.z) - halfSize) * gridSize + center.xyz;
+
+    float frequency = 1;
+    float amplitude = baseAmplitude;
+
+    for (int i = 0; i < octaves; i++) {
+        //generating the noise
+        float3 samplePos = octaveOffsets[i].xyz + ((frequency * pos) / scale);
+
+        //getting the noise height of that part of the map
+        noiseValue += snoise(samplePos) * amplitude;
+
+        //dealing with octaves
+        amplitude *= persistance;
+        frequency *= lacunarity;
+    }
+
+    float value = noiseValue - pos.y;
+
+    if (pos.y < floorHeight) {
+        value += floorStrength;
+    }
+
+    points[indexFromCoord(id.x, id.y, id.z)] = float4(pos, value);
+}
