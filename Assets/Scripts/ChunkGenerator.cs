@@ -10,7 +10,6 @@ public static class ChunkGenerator {
     // Buffer to store count in.
     private static ComputeBuffer countBuffer;
 
-    //private static List<Triangle>[] triangles;
     private static Triangle[] triangles;
 
     public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, float isoLevel) {
@@ -28,83 +27,10 @@ public static class ChunkGenerator {
 
         RunShader(terrainSize);
 
-        //for potential chunking for an infinite, procedurally generated terrain
-        /*
-        Vector3 numChunks = new Vector3(Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)), Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)), Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
-        
-        triangles = new List<Triangle>[(int)(numChunks.x * numChunks.y * numChunks.z)];
-
-        for (int i = 0; i < (int)(numChunks.x * numChunks.y * numChunks.z); i++) {
-            triangles[i] = new List<Triangle>();
-        }
-        
-        foreach (TriangleRaw rawTriangle in trianglesRaw) {
-            triangles[rawTriangle.chunk].Add(rawTriangle.ToTriangle());
-        }*/
-
         if (!Application.isPlaying) {
             DestroyBuffers();
         }
     }
-
-    //creates terrainchunks to fill up the specified terrain size
-    //for potential chunking for an infinite, procedurally generated terrain
-    /*
-    private static ChunkData[] CreateTerrainChunks(Vector3Int terrainSize, Vector3Int chunkSize, Vector3 center, float gridSize) {
-        List<ChunkData> chunks = new List<ChunkData>();
-        
-        Vector3 numChunks = new Vector3(Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)), Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)), Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
-
-        for (int x = 0; x < numChunks.x; x++) {
-            for (int y = 0; y < numChunks.y; y++) {
-                for (int z = 0; z < numChunks.z; z++) {
-                    //corner means top back left corner, in other words, the point that this chunk's values start at when copying them from the generated values
-                    int cornerX = x * (chunkSize.x - 1);
-                    int cornerY = y * (chunkSize.x - 1);
-                    int cornerZ = z * (chunkSize.x - 1);
-
-                    Vector3Int chunkSizeCorrected = chunkSize;
-                    if(chunkSizeCorrected.x + cornerX > terrainSize.x) {
-                        chunkSizeCorrected.x -= chunkSizeCorrected.x + cornerX - terrainSize.x;
-                    }
-                    if (chunkSizeCorrected.y + cornerY > terrainSize.y) {
-                        chunkSizeCorrected.y -= chunkSizeCorrected.y + cornerY - terrainSize.y;
-                    }
-                    if (chunkSizeCorrected.z + cornerZ > terrainSize.z) {
-                        chunkSizeCorrected.z -= chunkSizeCorrected.z + cornerZ - terrainSize.z;
-                    }
-
-                    int chunkIndex = (int)(x + y * numChunks.x + z * numChunks.x * numChunks.y);
-
-                    Vector3 chunkCenter = center + gridSize * (new Vector3(cornerX, cornerY, cornerZ) + ((chunkSizeCorrected - Vector3.one) / 2f) - ((new Vector3(terrainSize.x, terrainSize.y, terrainSize.z) - Vector3.one) / 2f));
-
-                    List<Vector3> chunkVertices = new List<Vector3>();
-                    List<int> chunkTriangles = new List<int>();
-                    
-
-                    foreach (Triangle triangle in triangles[chunkIndex]) {
-                        for (int i = 0; i < 3; i++) {
-                            chunkVertices.Add(triangle[i]);
-                            chunkTriangles.Add(chunkVertices.Count - 1);
-
-                            //this piece of code is so inefficient, but it gets rid of duplicates. Room for improvement! maybe classify vertices by edge in the polygonizer.
-                            //plus, it leaves seams in the terrain due to lighting errors
-                            /*
-                            if (chunkVertices.Contains(triangle[i])) {
-                                chunkTriangles.Add(chunkVertices.IndexOf(triangle[i]));
-                            } else {
-                                chunkVertices.Add(triangle[i]);
-                                chunkTriangles.Add(chunkVertices.Count - 1);
-                            }
-                        }
-                    }
-
-                    chunks.Add(new ChunkData(chunkVertices.ToArray(), chunkTriangles.ToArray(), chunkCenter));
-                }
-            }
-        }
-        return chunks.ToArray();
-    }*/
 
     //creates terrainchunks to make the terrain
     private static ChunkData[] CreateTerrainChunks() {
@@ -166,13 +92,6 @@ public static class ChunkGenerator {
             polygonizer.SetInt("sizeY", terrainSize.y);
             polygonizer.SetInt("sizeZ", terrainSize.z);
             polygonizer.SetFloat("isolevel", isoLevel);
-            /*
-            polygonizer.SetInt("chunkSizeX", chunkSize.x);
-            polygonizer.SetInt("chunkSizeY", chunkSize.y);
-            polygonizer.SetInt("chunkSizeZ", chunkSize.z);
-            polygonizer.SetInt("numChunksX", (int)Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)));
-            polygonizer.SetInt("numChunksY", (int)Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)));
-            polygonizer.SetInt("numChunksZ", (int)Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));*/
         }
     }
 
@@ -213,36 +132,6 @@ public static class ChunkGenerator {
             countBuffer.Release();
         }
     }
-
-    //creates terrainchunks to fill up the specified terrain size
-    /*
-    private struct TriangleRaw {
-#pragma warning disable 649 // disable unassigned variable warning
-        public Vector3 pointA;
-        public Vector3 pointB;
-        public Vector3 pointC;
-        public int chunk;
-        public Vector3 this[int i] {
-            get {
-                switch (i) {
-                    case 0:
-                        return pointA;
-                    case 1:
-                        return pointB;
-                    default:
-                        return pointC;
-                }
-            }
-        }
-
-        public Triangle ToTriangle() {
-            Triangle tri = new Triangle();
-            tri.pointA = pointA;
-            tri.pointB = pointB;
-            tri.pointC = pointC;
-            return tri;
-        }
-    };*/
 
     private struct Triangle {
 #pragma warning disable 649 // disable unassigned variable warning
