@@ -22,7 +22,7 @@ float3 interpolateVerts(float4 v1, float4 v2) {
     return v1.xyz + t * (v2.xyz - v1.xyz);
 }
 
-[numthreads(4,4,2)]
+[numthreads(numThreadsX, numThreadsY, numThreadsZ)]
 void Polygonize (uint3 id : SV_DispatchThreadID) {
     // Stop one point before the end because voxel includes neighbouring points
     if (id.x >= sizeX - 1 || id.y >= sizeY - 1 || id.z >= sizeZ - 1) {

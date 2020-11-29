@@ -8,3 +8,65 @@ Cmd: compileSnippet
   api=4 type=0 insize=1693 outsize=690 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
 Cmd: compileSnippet
   api=4 type=1 insize=1693 outsize=346 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: preprocessCompute
+  insize=3122 outsize=3121 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3121 outsize=69337 ok=1
+Cmd: preprocessCompute
+  insize=420 outsize=419 ok=1
+Cmd: preprocessCompute
+  insize=1441 outsize=1440 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1440 outsize=5404 ok=1
+Cmd: preprocessCompute
+  insize=2186 outsize=2185 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2185 outsize=9554 ok=1
+Cmd: preprocessCompute
+  insize=308 outsize=305 ok=0
+Cmd: preprocessCompute
+  insize=1439 outsize=1438 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1438 outsize=5404 ok=1
+Cmd: preprocessCompute
+  insize=1471 outsize=1470 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1470 outsize=5404 ok=1
+Cmd: preprocessCompute
+  insize=1133 outsize=1132 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1132 outsize=4810 ok=1
+Cmd: preprocessCompute
+  insize=3122 outsize=3121 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3121 outsize=69337 ok=1
+Cmd: preprocessCompute
+  insize=17110 outsize=17107 ok=0
+Cmd: preprocessCompute
+  insize=2218 outsize=2217 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2217 outsize=9554 ok=1
+Cmd: preprocessCompute
+  insize=1469 outsize=1468 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1468 outsize=5404 ok=1
+Cmd: preprocessCompute
+  insize=2022 outsize=2021 ok=1
+Cmd: compileComputeKernel
+  error: 1 plat 4 at WarpedNoise.compute(53): implicit truncation of vector type
+  error: 1 plat 4 at WarpedNoise.compute(55): implicit truncation of vector type
+  api=4 insize=2021 outsize=28505 ok=1
+Cmd: preprocessCompute
+  insize=1165 outsize=1164 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1164 outsize=4810 ok=1
+Cmd: preprocessCompute
+  insize=3154 outsize=3153 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3153 outsize=69337 ok=1
+Cmd: preprocessCompute
+  insize=2046 outsize=2045 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2045 outsize=28505 ok=1
+Cmd: preprocessCompute
+  insize=2040 outsize=2039 ok=1

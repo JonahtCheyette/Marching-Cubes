@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\HandlerTemplate.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\OverthoughtTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\PureNoiseHandler.cs" />
+    <Compile Include="Assets\Scripts\ChunkHandler Scripts\WarpedNoiseHandler.cs" />
     <Compile Include="Assets\Scripts\DensityFunction.cs" />
     <Compile Include="Assets\Scripts\DotTester.cs" />
     <Compile Include="Assets\Scripts\IcoSphere.cs" />
@@ -79,6 +80,7 @@
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Noise.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Basics.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\ExpierementalTerrain.compute" />
+    <None Include="Assets\Scripts\Resources\ComputeShaders\WarpedNoise.compute" />
     <None Include="Assets\Scripts\Resources\MeshShaders\TerrainShader.shader" />
     <None Include="Assets\Scripts\Resources\MeshShaders\DotShader.shader" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\NoiseDensity.compute" />

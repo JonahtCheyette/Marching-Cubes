@@ -14,7 +14,7 @@ float floorStrength;
 float terraceHeight;
 bool useTerracing;
 
-[numthreads(4, 4, 2)]
+[numthreads(numThreadsX, numThreadsY, numThreadsZ)]
 void Generate(uint3 id : SV_DispatchThreadID) {
     if (id.x >= sizeX || id.y >= sizeY || id.z >= sizeZ) {
         return;

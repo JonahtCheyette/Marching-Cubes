@@ -5,6 +5,9 @@ uint sizeY;
 uint sizeZ;
 float4 center;
 float gridSize;
+static const int numThreadsX = 4;
+static const int numThreadsY = 4;
+static const int numThreadsZ = 2;
 
 int indexFromCoord(int x, int y, int z) {
 	return x + y * sizeX + z * sizeX * sizeY;

@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class DensityFunction {
     private static ComputeShader noiseShader = (ComputeShader)Resources.Load("ComputeShaders/NoiseDensity");
     private static ComputeShader overthoughtTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/OverthoughtTerrain");
     private static ComputeShader expierementalTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/ExpierementalTerrain");
+    private static ComputeShader warpedNoiseShader = (ComputeShader)Resources.Load("ComputeShaders/WarpedNoise");
     private static ComputeBuffer points;
     private static Vector4[] values;
 
@@ -103,6 +105,40 @@ public static class DensityFunction {
         SetPerlinNoiseValues(expierementalTerrainShader, octaves, persistance, lacunarity, octaveOffsets);
 
         DispatchShader(expierementalTerrainShader, size);
+
+        if (!Application.isPlaying) {
+            DestroyBuffer();
+        }
+
+        return values;
+    }
+
+    public static Vector4[] GenerateWarpedNoiseValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed, float amplitude, float floorHeight, float floorStrength, WarpSettings[] warpSettings) {
+        SetupGeneration(warpedNoiseShader, size, gridSize, center);
+
+        warpedNoiseShader.SetFloat("scale", scale);
+        warpedNoiseShader.SetFloat("baseAmplitude", amplitude);
+        warpedNoiseShader.SetFloat("floorHeight", floorHeight);
+        warpedNoiseShader.SetFloat("floorStrength", floorStrength);
+        warpedNoiseShader.SetInt("numWarps", Mathf.Min(3, warpSettings.Length));
+        warpedNoiseShader.SetFloats("warpScales", warpSettings.Select(x => x.scale).ToArray());
+        warpedNoiseShader.SetVectorArray("warpOffsets1", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetOne, 0)).ToArray());
+        warpedNoiseShader.SetVectorArray("warpOffsets2", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetTwo, 0)).ToArray());
+        warpedNoiseShader.SetVectorArray("warpOffsets3", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetThree, 0)).ToArray());
+
+        Vector4[] octaveOffsets = new Vector4[octaves];
+
+        System.Random rand = new System.Random(seed);
+
+        for (int i = 0; i < octaves; i++) {
+            octaveOffsets[i].x = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].y = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].z = (float)rand.NextDouble() * 200000 - 100000;
+        }
+
+        SetPerlinNoiseValues(warpedNoiseShader, octaves, persistance, lacunarity, octaveOffsets);
+
+        DispatchShader(warpedNoiseShader, size);
 
         if (!Application.isPlaying) {
             DestroyBuffer();
