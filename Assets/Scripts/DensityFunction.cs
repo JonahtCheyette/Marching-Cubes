@@ -80,13 +80,15 @@ public static class DensityFunction {
         return values;
     }
 
-    public static Vector4[] GenerateExpierementalTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed, float amplitude, float floorHeight, float floorStrength) {
+    public static Vector4[] GenerateExpierementalTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed, float amplitude, float floorHeight, float floorStrength, bool useTerracing, float terraceHeight) {
         SetupGeneration(expierementalTerrainShader, size, gridSize, center);
 
         expierementalTerrainShader.SetFloat("scale", scale);
         expierementalTerrainShader.SetFloat("baseAmplitude", amplitude);
         expierementalTerrainShader.SetFloat("floorHeight", floorHeight);
         expierementalTerrainShader.SetFloat("floorStrength", floorStrength);
+        expierementalTerrainShader.SetBool("useTerracing", useTerracing);
+        expierementalTerrainShader.SetFloat("terraceHeight", terraceHeight);
 
         Vector4[] octaveOffsets = new Vector4[octaves];
 

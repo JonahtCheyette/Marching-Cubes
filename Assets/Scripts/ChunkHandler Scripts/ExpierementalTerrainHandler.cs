@@ -17,8 +17,11 @@ public class ExpierementalTerrainHandler : HandlerTemplate {
     public float floorHeight = 0;
     [Min(0)]
     public float floorStrength = 10;
+    public bool useTerracing = false;
+    [Min(0.0001f)]
+    public float terraceHeight = 1f;
 
     public override void GenerateValues() {
-        values = DensityFunction.GenerateExpierementalTerrainValues(terrainSize, gridSize, center, scale, octaves, persistance, lacunarity, seed, amplitude, floorHeight, floorStrength);
+        values = DensityFunction.GenerateExpierementalTerrainValues(terrainSize, gridSize, center, scale, octaves, persistance, lacunarity, seed, amplitude, floorHeight, floorStrength, useTerracing, terraceHeight);
     }
 }

@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{7A275A7C-7917-9E16-17D0-BA4476649801}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -65,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Editor\DotTesterEditor.cs" />
     <Compile Include="Assets\Editor\ExpierementalTerrainHandlerEditor.cs" />
+    <Compile Include="Assets\Editor\TestNoiseWarpEditor.cs" />
     <Compile Include="Assets\Editor\OverthoughtTerrainHandlerEditor.cs" />
     <Compile Include="Assets\Editor\PureNoiseHandlerEditor.cs" />
     <Reference Include="UnityEngine">

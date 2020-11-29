@@ -11,6 +11,8 @@ float lacunarity;
 float baseAmplitude;
 float floorHeight;
 float floorStrength;
+float terraceHeight;
+bool useTerracing;
 
 [numthreads(4, 4, 2)]
 void Generate(uint3 id : SV_DispatchThreadID) {
@@ -42,6 +44,10 @@ void Generate(uint3 id : SV_DispatchThreadID) {
 
     if (pos.y < floorHeight) {
         value += floorStrength;
+    }
+
+    if (useTerracing) {
+        value += pos.y % terraceHeight;
     }
 
     points[indexFromCoord(id.x, id.y, id.z)] = float4(pos, value);

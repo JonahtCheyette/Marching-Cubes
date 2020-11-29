@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HandlerTemplate : MonoBehaviour {
-    public Vector3Int chunkSize = Vector3Int.one * 17;
+    //public Vector3Int chunkSize = Vector3Int.one * 17;
     public Vector3Int terrainSize;
     [Min(0.0001f)]
     public float gridSize = 1;
@@ -34,9 +34,9 @@ public class HandlerTemplate : MonoBehaviour {
         }
         if (usePercentageSurfaceLevel) {
             SetIsoLevel();
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, chunkSize, center, gridSize, isoLevel);
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, isoLevel);
         } else {
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, chunkSize, center, gridSize, surfaceLevel);
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel);
         }
 
         CreateChunks();
@@ -144,6 +144,7 @@ public class HandlerTemplate : MonoBehaviour {
     }
 
     private void OnValidate() {
+        /*
         if (chunkSize.x < 2) {
             chunkSize.x = 2;
         }
@@ -172,7 +173,7 @@ public class HandlerTemplate : MonoBehaviour {
                     chunkSize.z--;
                 }
             }
-        }
+        }*/
 
         if (terrainSize.x < 2) {
             terrainSize.x = 2;

@@ -13,15 +13,15 @@ public static class ChunkGenerator {
     //private static List<Triangle>[] triangles;
     private static Triangle[] triangles;
 
-    public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, Vector3Int chunkSize, Vector3 center, float gridSize, float isoLevel) {
-        SetShaderValues(terrainSize, chunkSize, isoLevel);
+    public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, float isoLevel) {
+        SetShaderValues(terrainSize, isoLevel);
 
-        GenerateTriangles(values, terrainSize, chunkSize);
+        GenerateTriangles(values, terrainSize);
 
         return CreateTerrainChunks();
     }
 
-    private static void GenerateTriangles(Vector4[] values, Vector3Int terrainSize, Vector3Int chunkSize) {
+    private static void GenerateTriangles(Vector4[] values, Vector3Int terrainSize) {
         CreateBuffers(values.Length, terrainSize);
 
         SetBufferValues(values);
@@ -159,19 +159,20 @@ public static class ChunkGenerator {
         }
     }
 
-    private static void SetShaderValues(Vector3Int terrainSize, Vector3Int chunkSize, float isoLevel) {
+    private static void SetShaderValues(Vector3Int terrainSize, float isoLevel) {
         if (polygonizer != null) {
             //setting up the compute shader
             polygonizer.SetInt("sizeX", terrainSize.x);
             polygonizer.SetInt("sizeY", terrainSize.y);
             polygonizer.SetInt("sizeZ", terrainSize.z);
             polygonizer.SetFloat("isolevel", isoLevel);
+            /*
             polygonizer.SetInt("chunkSizeX", chunkSize.x);
             polygonizer.SetInt("chunkSizeY", chunkSize.y);
             polygonizer.SetInt("chunkSizeZ", chunkSize.z);
             polygonizer.SetInt("numChunksX", (int)Mathf.Ceil((terrainSize.x - 1) / (float)(chunkSize.x - 1)));
             polygonizer.SetInt("numChunksY", (int)Mathf.Ceil((terrainSize.y - 1) / (float)(chunkSize.y - 1)));
-            polygonizer.SetInt("numChunksZ", (int)Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));
+            polygonizer.SetInt("numChunksZ", (int)Mathf.Ceil((terrainSize.z - 1) / (float)(chunkSize.z - 1)));*/
         }
     }
 
