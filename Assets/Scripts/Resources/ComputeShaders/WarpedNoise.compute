@@ -49,12 +49,11 @@ void Generate(uint3 id : SV_DispatchThreadID) {
     float3 pos = (float3(id.x, id.y, id.z) - halfSize) * gridSize + center.xyz;
 
     float3 warpages[3];
-
     warpages[0] = float3(noise(pos + warpOffsets1[0].xyz), noise(pos + warpOffsets2[0].xyz), noise(pos + warpOffsets3[0].xyz));
     for (int i = 1; i < numWarps; i++){
         warpages[i] = float3(noise(pos + warpages[i - 1] * warpScales[i - 1] + warpOffsets1[i].xyz), noise(pos + warpages[i - 1] * warpScales[i - 1] + warpOffsets2[i].xyz), noise(pos + warpages[i - 1] * warpScales[i - 1] + warpOffsets3[i].xyz));
     }
-    float value = noise(pos + warpages[numWarps - 1] * warpScales[numWarps - 1]);
+    float value = - pos.y + noise(pos + warpages[numWarps - 1] * warpScales[numWarps - 1]);
 
     if (pos.y < floorHeight) {
         value += floorStrength;

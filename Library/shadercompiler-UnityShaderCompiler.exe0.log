@@ -70,3 +70,63 @@ Cmd: compileComputeKernel
   api=4 insize=2045 outsize=28505 ok=1
 Cmd: preprocessCompute
   insize=2040 outsize=2039 ok=1
+Cmd: preprocessCompute
+  insize=2050 outsize=2049 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2049 outsize=28537 ok=1
+Cmd: preprocessCompute
+  insize=2096 outsize=2095 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2095 outsize=28525 ok=1
+Cmd: preprocessCompute
+  insize=2570 outsize=2569 ok=1
+Cmd: preprocessCompute
+  insize=2571 outsize=2570 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2570 outsize=20977 ok=1
+Cmd: preprocessCompute
+  insize=2616 outsize=2615 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at WarpedNoise.compute(63): redefinition of 'value'
+  api=4 insize=2615 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=2618 outsize=2617 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2617 outsize=1214 ok=1
+Cmd: preprocessCompute
+  insize=2602 outsize=2601 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2601 outsize=1148 ok=1
+Cmd: preprocessCompute
+  insize=2618 outsize=2617 ok=1
+Cmd: preprocessCompute
+  insize=2606 outsize=2605 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2605 outsize=1176 ok=1
+Cmd: preprocessCompute
+  insize=2618 outsize=2617 ok=1
+Cmd: preprocessCompute
+  insize=2607 outsize=2606 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2606 outsize=1134 ok=1
+Cmd: preprocessCompute
+  insize=2607 outsize=2606 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2606 outsize=1134 ok=1
+Cmd: preprocessCompute
+  insize=2618 outsize=2617 ok=1
+Cmd: preprocessCompute
+  insize=2571 outsize=2570 ok=1
+Cmd: preprocessCompute
+  insize=2816 outsize=2815 ok=1
+Cmd: compileComputeKernel
+  error: 2 plat 4 at WarpedNoise.compute(55): incorrect number of arguments to numeric-type constructor
+  api=4 insize=2815 outsize=0 ok=0
+Cmd: preprocessCompute
+  insize=2808 outsize=2807 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2807 outsize=21217 ok=1
+Cmd: preprocessCompute
+  insize=2048 outsize=2047 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2047 outsize=28537 ok=1

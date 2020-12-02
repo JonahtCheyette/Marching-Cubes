@@ -121,7 +121,20 @@ public static class DensityFunction {
         warpedNoiseShader.SetFloat("floorHeight", floorHeight);
         warpedNoiseShader.SetFloat("floorStrength", floorStrength);
         warpedNoiseShader.SetInt("numWarps", Mathf.Min(3, warpSettings.Length));
-        warpedNoiseShader.SetFloats("warpScales", warpSettings.Select(x => x.scale).ToArray());
+        List<float> formattedScales = new List<float>();
+        float[] scales = warpSettings.Select(x => x.scale).ToArray();
+        for(int i = 0; i < 3; i++) {
+            if(i < scales.Length) {
+                formattedScales.Add(scales[i]);
+            } else {
+                formattedScales.Add(0);
+            }
+            //for whatever reason, when assigning to a float array, Setfloats() only reads every 4th value. STUPID.
+            for (int j = 0; j < 3; j++) {
+                formattedScales.Add(0);
+            }
+        }
+        warpedNoiseShader.SetFloats("warpScales", formattedScales.ToArray());
         warpedNoiseShader.SetVectorArray("warpOffsets1", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetOne, 0)).ToArray());
         warpedNoiseShader.SetVectorArray("warpOffsets2", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetTwo, 0)).ToArray());
         warpedNoiseShader.SetVectorArray("warpOffsets3", warpSettings.Select(x => Utility.Vector4FromVector3andValue(x.offsetThree, 0)).ToArray());
