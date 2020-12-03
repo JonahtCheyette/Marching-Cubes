@@ -29,9 +29,11 @@ public class HandlerTemplate : MonoBehaviour {
 
     public virtual void GenerateChunks() {
         GenerateValues();
+
         if (showMinAndMaxValues) {
             PrintMinAndMaxValues();
         }
+
         if (usePercentageSurfaceLevel) {
             SetIsoLevel();
             terrainChunkData = ChunkGenerator.Generate(values, terrainSize, isoLevel);
@@ -40,7 +42,6 @@ public class HandlerTemplate : MonoBehaviour {
         }
 
         CreateChunks();
-        //ResizeAndCreateChunks();
     }
 
     private void CreateChunks() {

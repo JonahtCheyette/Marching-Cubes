@@ -78,6 +78,7 @@
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\MarchTables.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\OverthoughtTerrain.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Noise.compute" />
+    <None Include="Assets\Scripts\Resources\MeshShaders\NormalBasedShader.shader" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\Basics.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\ExpierementalTerrain.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\WarpedNoise.compute" />

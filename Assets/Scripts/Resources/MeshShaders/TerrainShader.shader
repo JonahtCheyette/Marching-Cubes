@@ -2,6 +2,8 @@
 {
     Properties
     {
+        _NumLayers ("Number of layers", Int) = 8
+
         _Color1 ("Color 1", Color) = (1,1,1,1)
 
         _Color2 ("Color 2", Color) = (1,1,1,1)
@@ -51,6 +53,8 @@
             float3 worldPos;
         };
 
+        int _NumLayers;
+
         fixed4 _Color1;
 
         fixed4 _Color2;
@@ -90,27 +94,43 @@
             //I know this code is awful, but it was easy to make and worked with unity's property system
             o.Albedo = _Color1.rgb;
 
-            //interpolates from 0 when the height is half a baseBlends below that base's starting height to 1 when the height is half a baseBlends above the starting height
-            float drawStrength = inverseLerp(_MinY2 - (_Blend2 / 2) - epsilon, _MinY2 + (_Blend2 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color2.rgb) * drawStrength;
+            float drawStrength = 0;
 
-            drawStrength = inverseLerp(_MinY3 - (_Blend3 / 2) - epsilon, _MinY3 + (_Blend3 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color3.rgb) * drawStrength;
+            if (_NumLayers >= 2) {
+                //interpolates from 0 when the height is half a blend below that color's starting height to 1 when the height is half a blend above the starting height
+                drawStrength = inverseLerp(_MinY2 - (_Blend2 / 2) - epsilon, _MinY2 + (_Blend2 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color2.rgb) * drawStrength;
+            }
 
-            drawStrength = inverseLerp(_MinY4 - (_Blend4 / 2) - epsilon, _MinY4 + (_Blend4 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color4.rgb) * drawStrength;
+            if (_NumLayers >= 3) {
+                drawStrength = inverseLerp(_MinY3 - (_Blend3 / 2) - epsilon, _MinY3 + (_Blend3 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color3.rgb) * drawStrength;
+            }
 
-            drawStrength = inverseLerp(_MinY5 - (_Blend5 / 2) - epsilon, _MinY5 + (_Blend5 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color5.rgb) * drawStrength;
+            if (_NumLayers >= 4) {
+                drawStrength = inverseLerp(_MinY4 - (_Blend4 / 2) - epsilon, _MinY4 + (_Blend4 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color4.rgb) * drawStrength;
+            }
 
-            drawStrength = inverseLerp(_MinY6 - (_Blend6 / 2) - epsilon, _MinY6 + (_Blend6 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color6.rgb) * drawStrength;
+            if (_NumLayers >= 5) {
+                drawStrength = inverseLerp(_MinY5 - (_Blend5 / 2) - epsilon, _MinY5 + (_Blend5 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color5.rgb) * drawStrength;
+            }
 
-            drawStrength = inverseLerp(_MinY7 - (_Blend7 / 2) - epsilon, _MinY7 + (_Blend7 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color7.rgb) * drawStrength;
+            if (_NumLayers >= 6) {
+                drawStrength = inverseLerp(_MinY6 - (_Blend6 / 2) - epsilon, _MinY6 + (_Blend6 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color6.rgb) * drawStrength;
+            }
 
-            drawStrength = inverseLerp(_MinY8 - (_Blend8 / 2) - epsilon, _MinY8 + (_Blend8 / 2), IN.worldPos.y);
-            o.Albedo = o.Albedo * (1 - drawStrength) + (_Color8.rgb) * drawStrength;
+            if (_NumLayers >= 7) {
+                drawStrength = inverseLerp(_MinY7 - (_Blend7 / 2) - epsilon, _MinY7 + (_Blend7 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color7.rgb) * drawStrength;
+            }
+
+            if (_NumLayers >= 8) {
+                drawStrength = inverseLerp(_MinY8 - (_Blend8 / 2) - epsilon, _MinY8 + (_Blend8 / 2), IN.worldPos.y);
+                o.Albedo = o.Albedo * (1 - drawStrength) + (_Color8.rgb) * drawStrength;
+            }
         }
         ENDCG
     }
