@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-//says to use this editor for the BaseTerrainHandler Script
+//says to use this editor for the ExpierementalTerrainHandler Script
 [CustomEditor(typeof(ExpierementalTerrainHandler))]
 public class ExpierementalTerrainHandlerEditor : Editor {
 
     public override void OnInspectorGUI() {
-        //gets the BaseTerrainHandler reference
+        //gets the ExpierementalTerrainHandler reference
         ExpierementalTerrainHandler terrainHandler = (ExpierementalTerrainHandler)target;
         DrawDefaultInspector();
 

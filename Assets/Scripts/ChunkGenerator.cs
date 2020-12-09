@@ -46,17 +46,17 @@ public static class ChunkGenerator {
             for (int j = index; j < index + 21845; j++) {
                 if (j < triangles.Length) {
                     for (int k = 0; k < 3; k++) {
-                        //chunkVertices.Add(triangles[j][k]);
-                        //chunkTriangles.Add(chunkVertices.Count - 1);
+                        chunkVertices.Add(triangles[j][k]);
+                        chunkTriangles.Add(chunkVertices.Count - 1);
                         //this piece of code is so inefficient, but it gets rid of duplicates. Room for improvement! maybe classify vertices by edge in the polygonizer.
                         //plus, it leaves seams in the terrain due to lighting errors
-                        
+                        /*
                         if (chunkVertices.Contains(triangles[j][k])) {
                             chunkTriangles.Add(chunkVertices.IndexOf(triangles[j][k]));
                         } else {
                             chunkVertices.Add(triangles[j][k]);
                             chunkTriangles.Add(chunkVertices.Count - 1);
-                        }
+                        }*/
                     }
                 } else {
                     break;

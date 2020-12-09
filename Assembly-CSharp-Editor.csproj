@@ -67,6 +67,7 @@
     <Compile Include="Assets\Editor\ExpierementalTerrainHandlerEditor.cs" />
     <Compile Include="Assets\Editor\OverthoughtTerrainHandlerEditor.cs" />
     <Compile Include="Assets\Editor\PureNoiseHandlerEditor.cs" />
+    <Compile Include="Assets\Editor\SphericalNoiseHandlerEditor.cs" />
     <Compile Include="Assets\Editor\TestNoiseWarpEditor.cs" />
     <Compile Include="Assets\Editor\WarpedNoiseHandlerEditor.cs" />
     <Reference Include="UnityEngine">
