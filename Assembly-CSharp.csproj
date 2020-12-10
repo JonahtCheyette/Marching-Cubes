@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\CamMove.cs" />
     <Compile Include="Assets\Scripts\ChunkGenerator.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\ExpierementalTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\HandlerTemplate.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Assets\Scripts\DotTester.cs" />
     <Compile Include="Assets\Scripts\IcoSphere.cs" />
     <Compile Include="Assets\Scripts\TerrainChunk.cs" />
+    <Compile Include="Assets\Scripts\TerrainEditor.cs" />
     <Compile Include="Assets\Scripts\TestNoiseWarp.cs" />
     <Compile Include="Assets\Scripts\Utility.cs" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Includes\MarchTables.compute" />
@@ -87,6 +89,7 @@
     <None Include="Assets\Scripts\Resources\ComputeShaders\WarpedNoise.compute" />
     <None Include="Assets\Scripts\Resources\MeshShaders\TerrainShader.shader" />
     <None Include="Assets\Scripts\Resources\MeshShaders\DotShader.shader" />
+    <None Include="Assets\Scripts\Resources\MeshShaders\TransparentShader.shader" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\NoiseDensity.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Polygonize.compute" />
     <Reference Include="UnityEngine">

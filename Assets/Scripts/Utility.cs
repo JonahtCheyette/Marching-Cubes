@@ -57,4 +57,14 @@ public static class Utility {
     public static float Interpolate(float min, float max, float percentage) {
         return min + ((max - min) * percentage);
     }
+
+    public static float Constrain(float min, float max, float val) {
+        if(val > max) {
+            return max;
+        }
+        if(val < min) {
+            return min;
+        }
+        return val;
+    }
 }
