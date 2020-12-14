@@ -12,22 +12,22 @@ public static class ChunkGenerator {
 
     private static Triangle[] triangles;
 
-    public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, float isoLevel) {
+    public static ChunkData[] Generate(Vector4[] values, Vector3Int terrainSize, float isoLevel, bool deleteBuffers = false) {
         SetShaderValues(terrainSize, isoLevel);
 
-        GenerateTriangles(values, terrainSize);
+        GenerateTriangles(values, terrainSize, deleteBuffers);
 
         return CreateTerrainChunks();
     }
 
-    private static void GenerateTriangles(Vector4[] values, Vector3Int terrainSize) {
+    private static void GenerateTriangles(Vector4[] values, Vector3Int terrainSize, bool deleteBuffers) {
         CreateBuffers(values.Length, terrainSize);
 
         SetBufferValues(values);
 
         RunShader(terrainSize);
 
-        if (!Application.isPlaying) {
+        if (!Application.isPlaying || deleteBuffers) {
             DestroyBuffers();
         }
     }

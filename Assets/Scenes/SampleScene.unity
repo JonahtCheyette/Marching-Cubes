@@ -217,7 +217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &331295329
 Transform:
   m_ObjectHideFlags: 0
@@ -232,14 +232,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &331295330
-AudioListener:
+--- !u!114 &331295330
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331295328}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f3d35f7c3a4a144ae0a3baf045a50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHorizontalSpeed: 10
+  horizontalAcceleration: 2
+  verticalSpeed: 10
 --- !u!20 &331295331
 Camera:
   m_ObjectHideFlags: 0
@@ -1660,11 +1667,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb461af9395a6a845a9859256668ce96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainSize: {x: 100, y: 100, z: 100}
+  terrainSize: {x: 20, y: 20, z: 20}
   gridSize: 1
   surfaceLevel: 0.5
   brushSize: 10
   brush: {fileID: 384515994}
+  cam: {fileID: 331295331}
 --- !u!4 &1740930895
 Transform:
   m_ObjectHideFlags: 0

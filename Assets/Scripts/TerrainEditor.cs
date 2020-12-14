@@ -13,10 +13,16 @@ public class TerrainEditor : MonoBehaviour {
     public float brushSize = 10f;
     public GameObject brush;
     public Camera cam;
+    public Material meshMaterial;
 
     private Vector4[] values;
     private Bounds bounds;
     private float rayDistance;
+
+    private List<TerrainChunk> chunks = new List<TerrainChunk>();
+    private ChunkData[] terrainChunkData;
+
+    private bool valuesChangedLastFrame = false;
 
     void Start() {
         values = new Vector4[terrainSize.x * terrainSize.y * terrainSize.z];
@@ -27,7 +33,7 @@ public class TerrainEditor : MonoBehaviour {
             for (int y = 0; y < terrainSize.y; y++) {
                 for (int z = 0; z < terrainSize.z; z++) {
                     values[Utility.XYZtoIndex(x, y, z, terrainSize)] = Utility.Vector4FromVector3andValue(Utility.CalculatePointPosition(new Vector3Int(x, y, z), gameObject.transform.position, gridSize, terrainSize), 0);
-                    if(y == terrainSize.y - 1) {
+                    if(y == 0) {
                         values[Utility.XYZtoIndex(x, y, z, terrainSize)].w = 1;
                     }
                 }
@@ -37,6 +43,9 @@ public class TerrainEditor : MonoBehaviour {
         if (Camera.current != null) {
             rayDistance = Mathf.Sqrt(bounds.SqrDistance(Camera.current.transform.position));
         }
+
+        terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, true);
+        CreateChunks();
     }
 
     // Update is called once per frame
@@ -44,6 +53,85 @@ public class TerrainEditor : MonoBehaviour {
         bool valuesChanged = false;
         Ray mouseRay = cam.ScreenPointToRay(Input.mousePosition);
 
+        ChangeBrushSize();
+
+        float distance;
+        if (bounds.IntersectRay(mouseRay, out distance)) {
+            if (!brush.activeSelf) {
+                brush.SetActive(true);
+            }
+
+            ChangeBrushDistance();
+
+            MoveBrush(mouseRay, distance);
+
+            if (Input.GetMouseButton(0)) {
+                Vector3 center = mouseRay.GetPoint(rayDistance);
+                //left click
+                for (int i = 0; i < values.Length; i++) {
+                    Vector3 diff = new Vector3(values[i].x, values[i].y, values[i].z) - center;
+                    if (diff.x * diff.x + diff.y * diff.y + diff.z * diff.z < brushSize * brushSize) {
+                        values[i].w += 0.01f;
+                        valuesChanged = true;
+                        values[i].w = Utility.Constrain(0, 1, values[i].w);
+                    }
+                }
+            } else if (Input.GetMouseButton(1)) {
+                Vector3 center = mouseRay.GetPoint(rayDistance);
+                //right click
+                for (int i = 0; i < values.Length; i++) {
+                    Vector3 diff = new Vector3(values[i].x, values[i].y, values[i].z) - center;
+                    if (diff.x * diff.x + diff.y * diff.y + diff.z * diff.z < brushSize * brushSize) {
+                        values[i].w -= 0.01f;
+                        valuesChanged = true;
+                        values[i].w = Utility.Constrain(0, 1, values[i].w);
+                    }
+                }
+            }
+        } else {
+            if (brush.activeSelf) {
+                brush.SetActive(false);
+            }
+        }
+
+        if (valuesChanged) {
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel);
+            CreateChunks();
+        } else if(valuesChangedLastFrame) {
+            ChunkGenerator.DestroyBuffers();
+        }
+
+        valuesChangedLastFrame = valuesChanged;
+    }
+
+    private void MoveBrush(Ray mouseRay, float distance) {
+        //constraining the brush to be affecting the box
+        Ray testRay = new Ray(mouseRay.GetPoint(Mathf.Max(terrainSize.x, terrainSize.y, terrainSize.z) * gridSize), mouseRay.direction * -1);
+        float testDistance;
+        bounds.IntersectRay(testRay, out testDistance);
+
+        Vector3 originDiff = testRay.origin - mouseRay.origin;
+        float farDistance = Mathf.Sqrt(originDiff.x * originDiff.x + originDiff.y * originDiff.y + originDiff.z * originDiff.z) - testDistance;
+
+        rayDistance = Utility.Constrain(distance - brushSize / 2, farDistance + brushSize / 2, rayDistance);
+
+        brush.transform.position = mouseRay.GetPoint(rayDistance);
+        brush.transform.localScale = Vector3.one * brushSize;
+    }
+
+    private void ChangeBrushDistance() {
+        if (!Input.GetKey(KeyCode.Z)) {
+            if (Input.mouseScrollDelta.y > 0) {
+                //scroll up
+                rayDistance += 0.5f;
+            } else if (Input.mouseScrollDelta.y < 0) {
+                //scroll down
+                rayDistance -= 0.5f;
+            }
+        }
+    }
+
+    private void ChangeBrushSize() {
         if (Input.GetKey(KeyCode.Z)) {
             if (Input.mouseScrollDelta.y > 0) {
                 //scroll up
@@ -54,62 +142,16 @@ public class TerrainEditor : MonoBehaviour {
             }
             brushSize = Utility.Constrain(0, (terrainSize.x - 1) * gridSize, brushSize);
         }
+    }
 
-        float distance;
-        if (bounds.IntersectRay(mouseRay, out distance)) {
-            if (!brush.activeSelf) {
-                brush.SetActive(true);
-            }
+    private void CreateChunks() {
+        for (int i = gameObject.transform.childCount - 1; i >= 0; i--) {
+            DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
+        }
+        chunks.Clear();
 
-            if (!Input.GetKey(KeyCode.Z)) {
-                if (Input.mouseScrollDelta.y > 0) {
-                    //scroll up
-                    rayDistance += 0.5f;
-                } else if (Input.mouseScrollDelta.y < 0) {
-                    //scroll down
-                    rayDistance -= 0.5f;
-                }
-            }
-
-            //constraining the ray to be affecting the box
-            Ray testRay = new Ray(mouseRay.GetPoint(Mathf.Max(terrainSize.x, terrainSize.y, terrainSize.z) * gridSize), mouseRay.direction * -1);
-            float testDistance;
-            bounds.IntersectRay(testRay, out testDistance);
-
-            Vector3 originDiff = testRay.origin - mouseRay.origin;
-            float farDistance = Mathf.Sqrt(originDiff.x * originDiff.x + originDiff.y * originDiff.y + originDiff.z * originDiff.z) - testDistance;
-
-            rayDistance = Utility.Constrain(distance - brushSize / 2, farDistance + brushSize / 2, rayDistance);
-
-            brush.transform.position = mouseRay.GetPoint(rayDistance);
-            brush.transform.localScale = Vector3.one * brushSize;
-
-            if (Input.GetMouseButton(0)) {
-                Vector3 center = mouseRay.GetPoint(rayDistance);
-                //left click
-                for (int i = 0; i < values.Length; i++) {
-                    Vector3 diff = new Vector3(values[i].x, values[i].y, values[i].z) - center;
-                    if (diff.x * diff.x + diff.y * diff.y + diff.z * diff.z < brushSize * brushSize) {
-                        values[i].w -= 0.1f;
-                        valuesChanged = true;
-                    }
-                }
-
-            } else if (Input.GetMouseButton(1)) {
-                Vector3 center = mouseRay.GetPoint(rayDistance);
-                //right click
-                for (int i = 0; i < values.Length; i++) {
-                    Vector3 diff = new Vector3(values[i].x, values[i].y, values[i].z) - center;
-                    if (diff.x * diff.x + diff.y * diff.y + diff.z * diff.z < brushSize * brushSize) {
-                        values[i].w += 0.1f;
-                        valuesChanged = true;
-                    }
-                }
-            }
-        } else {
-            if (brush.activeSelf) {
-                brush.SetActive(false);
-            }
+        for (int i = 0; i < terrainChunkData.Length; i++) {
+            chunks.Add(new TerrainChunk(terrainChunkData[i], gameObject, meshMaterial));
         }
     }
 
