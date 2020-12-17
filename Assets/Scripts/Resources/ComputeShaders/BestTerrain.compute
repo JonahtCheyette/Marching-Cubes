@@ -1,13 +1,54 @@
-﻿// Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
+﻿#pragma kernel Generate
+#include "/Includes/Noise.compute"
+#include "/Includes/Basics.compute"
 
-// Create a RenderTexture with enableRandomWrite flag and set it
-// with cs.SetTexture
-RWTexture2D<float4> Result;
+//all the stuff under here will be set from DensityFunction.cs
+float4 octaveOffsets[8];
+float scale;
+int octaves;
+float persistance;
+float lacunarity;
+float baseAmplitude;
+float floorHeight;
+float floorStrength;
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_DispatchThreadID) {
-    // TODO: insert actual code here!
+[numthreads(numThreadsX, numThreadsY, numThreadsZ)]
+void Generate(uint3 id : SV_DispatchThreadID) {
+    if (id.x >= sizeX || id.y >= sizeY || id.z >= sizeZ) {
+        return;
+    }
 
-    Result[id.xy] = float4(id.x & id.y, (id.x & 15)/15.0, (id.y & 15)/15.0, 0.0);
+    float noiseValue = 0;
+    float3 halfSize = float3((float)(sizeX - 1), (float)(sizeY - 1), (float)(sizeZ - 1)) / 2;
+
+    float3 pos = (float3(id.x, id.y, id.z) - halfSize) * gridSize + center.xyz;
+
+    float frequency = 1;
+    float amplitude = baseAmplitude;
+
+    for (int i = 0; i < octaves; i++) {
+        //generating the noise
+        float2 samplePos = octaveOffsets[i].xz + ((frequency * pos.xz) / scale);
+
+        //getting the noise height of that part of the map
+        float n = snoise(float3(samplePos.x, 0, samplePos.y)) * amplitude;
+        //this gives us ridgelike patterns, makes a nice base
+        float v = 1 - abs(n);
+        //squaring this value gives us a nice curve so we wnd up with beaches
+        v *= v;
+
+        noiseValue += v;
+
+        //dealing with octaves
+        amplitude *= persistance;
+        frequency *= lacunarity;
+    }
+
+    float value = noiseValue - pos.y;
+
+    if (pos.y < floorHeight) {
+        value += floorStrength;
+    }
+
+    points[indexFromCoord(id.x, id.y, id.z)] = float4(pos, value);
 }

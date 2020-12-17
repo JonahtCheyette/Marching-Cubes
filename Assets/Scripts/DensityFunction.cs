@@ -189,10 +189,13 @@ public static class DensityFunction {
         return values;
     }
 
-    public static Vector4[] GenerateBestTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed) {
+    public static Vector4[] GenerateBestTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed, float amplitude, float floorHeight, float floorStrength) {
         SetupGeneration(bestTerrainShader, size, gridSize, center);
 
         bestTerrainShader.SetFloat("scale", scale);
+        bestTerrainShader.SetFloat("baseAmplitude", amplitude);
+        bestTerrainShader.SetFloat("floorHeight", floorHeight);
+        bestTerrainShader.SetFloat("floorStrength", floorStrength);
 
         Vector4[] octaveOffsets = new Vector4[octaves];
 

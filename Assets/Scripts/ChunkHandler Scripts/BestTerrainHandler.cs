@@ -13,8 +13,13 @@ public class BestTerrainHandler : HandlerTemplate {
     [Min(1)]
     public float lacunarity = 2;
     public int seed = 0;
+    public float floorHeight = 0;
+    [Min(0)]
+    public float floorStrength = 0;
+    [Min(0)]
+    public float amplitude = 0;
 
     public override void GenerateValues() {
-        values = DensityFunction.GenerateBestTerrainValues(terrainSize, gridSize, center, scale, octaves, persistance, lacunarity, seed);
+        values = DensityFunction.GenerateBestTerrainValues(terrainSize, gridSize, center, scale, octaves, persistance, lacunarity, seed, amplitude, floorHeight, floorStrength);
     }
 }
