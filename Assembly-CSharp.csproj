@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CamMove.cs" />
     <Compile Include="Assets\Scripts\ChunkGenerator.cs" />
+    <Compile Include="Assets\Scripts\ChunkHandler Scripts\BestTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\ExpierementalTerrainHandler.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\HandlerTemplate.cs" />
     <Compile Include="Assets\Scripts\ChunkHandler Scripts\OverthoughtTerrainHandler.cs" />
@@ -91,6 +92,7 @@
     <None Include="Assets\Scripts\Resources\MeshShaders\DotShader.shader" />
     <None Include="Assets\Scripts\Resources\MeshShaders\TransparentShader.shader" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\NoiseDensity.compute" />
+    <None Include="Assets\Scripts\Resources\ComputeShaders\BestTerrain.compute" />
     <None Include="Assets\Scripts\Resources\ComputeShaders\Polygonize.compute" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

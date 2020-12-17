@@ -9,6 +9,7 @@ public static class DensityFunction {
     private static ComputeShader expierementalTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/ExpierementalTerrain");
     private static ComputeShader warpedNoiseShader = (ComputeShader)Resources.Load("ComputeShaders/WarpedNoise");
     private static ComputeShader sphericalNoiseShader = (ComputeShader)Resources.Load("ComputeShaders/SphericalNoise");
+    private static ComputeShader bestTerrainShader = (ComputeShader)Resources.Load("ComputeShaders/BestTerrain");
     private static ComputeBuffer points;
     private static Vector4[] values;
 
@@ -180,6 +181,32 @@ public static class DensityFunction {
         SetPerlinNoiseValues(sphericalNoiseShader, octaves, persistance, lacunarity, octaveOffsets);
 
         DispatchShader(sphericalNoiseShader, size);
+
+        if (!Application.isPlaying) {
+            DestroyBuffer();
+        }
+
+        return values;
+    }
+
+    public static Vector4[] GenerateBestTerrainValues(Vector3Int size, float gridSize, Vector3 center, float scale, int octaves, float persistance, float lacunarity, int seed) {
+        SetupGeneration(bestTerrainShader, size, gridSize, center);
+
+        bestTerrainShader.SetFloat("scale", scale);
+
+        Vector4[] octaveOffsets = new Vector4[octaves];
+
+        System.Random rand = new System.Random(seed);
+
+        for (int i = 0; i < octaves; i++) {
+            octaveOffsets[i].x = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].y = (float)rand.NextDouble() * 200000 - 100000;
+            octaveOffsets[i].z = (float)rand.NextDouble() * 200000 - 100000;
+        }
+
+        SetPerlinNoiseValues(bestTerrainShader, octaves, persistance, lacunarity, octaveOffsets);
+
+        DispatchShader(bestTerrainShader, size);
 
         if (!Application.isPlaying) {
             DestroyBuffer();

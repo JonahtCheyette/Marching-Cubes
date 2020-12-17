@@ -71,13 +71,13 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _MinY2: 0.4
-    - _MinY3: 0.8
-    - _MinY4: 1
-    - _MinY5: 3.17
-    - _MinY6: 9.36
-    - _MinY7: 13.9
-    - _MinY8: 16.8
+    - _MinY2: -9.4
+    - _MinY3: -9.03
+    - _MinY4: -7.73
+    - _MinY5: -5.02
+    - _MinY6: 0.86
+    - _MinY7: 3.43
+    - _MinY8: 7.1
     - _Mode: 0
     - _NumLayers: 8
     - _OcclusionStrength: 1
