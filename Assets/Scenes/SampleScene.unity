@@ -1088,6 +1088,74 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1240859124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1240859126}
+  - component: {fileID: 1240859125}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1240859125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240859124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93ccce1a98b4944595846f0dd28442e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainSize: {x: 2, y: 2, z: 2}
+  gridSize: 1
+  surfaceLevel: -0.5
+  center: {x: 0, y: 24, z: 0}
+  meshMaterial: {fileID: 2100000, guid: 40a39c67dc7326941acc4558724137e6, type: 2}
+  AutoUpdate: 0
+  showMinAndMaxValues: 0
+  usePercentageSurfaceLevel: 0
+  values:
+  - {x: -0.5, y: 23.5, z: -0.5, w: -16.435368}
+  - {x: 0.5, y: 23.5, z: -0.5, w: -15.68486}
+  - {x: -0.5, y: 24.5, z: -0.5, w: -17.435368}
+  - {x: 0.5, y: 24.5, z: -0.5, w: -16.68486}
+  - {x: -0.5, y: 23.5, z: 0.5, w: -15.341214}
+  - {x: 0.5, y: 23.5, z: 0.5, w: -14.361414}
+  - {x: -0.5, y: 24.5, z: 0.5, w: -16.341213}
+  - {x: 0.5, y: 24.5, z: 0.5, w: -15.361414}
+  scale: 70
+  octaves: 8
+  persistance: 0.5
+  lacunarity: 2
+  seed: 0
+  floorHeight: 5
+  floorStrength: 9.03
+  amplitude: 8
+--- !u!4 &1240859126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240859124}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1402185069
 GameObject:
   m_ObjectHideFlags: 0
