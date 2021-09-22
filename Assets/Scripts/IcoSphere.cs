@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-
-// yeah, I copied this from online ruthlessly gutted it, what are you going to do about it
+// yeah, I copied this from online and ruthlessly gutted it, what are you going to do about it
 public static class IcoSphere {
     private struct TriangleIndices {
         public int v1;

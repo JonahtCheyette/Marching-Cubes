@@ -32,8 +32,6 @@ public class DotTester : MonoBehaviour {
     private float min;
     private float max;
 
-    private float[] dotValues = new float[1023];
-
     public enum GenerationType {
         noise
     }
@@ -45,9 +43,6 @@ public class DotTester : MonoBehaviour {
         CreateMeshes();
 
         FindMinAndMaxValue();
-
-        //getting just the values
-        GetPointValues(points);
 
         SetMaterialValues();
 
@@ -71,45 +66,39 @@ public class DotTester : MonoBehaviour {
     private void CreateMeshes() {
         meshes = new Mesh[points.Length];
         meshPositions = new Vector3[points.Length];
+        Vector2[] uvs = new Vector2[12];
 
         for (int x = 0; x < size.x; x++) {
             for (int y = 0; y < size.y; y++) {
                 for (int z = 0; z < size.z; z++) {
+                    int i = x + (y * size.x) + (z * size.x * size.y);
                     //creating the icospheres and setting their positions
-                    meshes[x + (y * size.x) + (z * size.x * size.y)] = IcoSphere.Create(dotSize);
-                    meshPositions[x + (y * size.x) + (z * size.x * size.y)] = Utility.CalculatePointPosition(new Vector3Int(x, y, z), center, gridSize, size);
+                    meshes[i] = IcoSphere.Create(dotSize);
+
+                    for(int j = 0; j < 12; j++) {
+                        uvs[j] = Vector2.one * points[i].w;
+                    }
+                    meshes[i].uv = uvs;
+
+                    meshPositions[i] = Utility.CalculatePointPosition(new Vector3Int(x, y, z), center, gridSize, size);
                 }
             }
         }
     }
 
     private Vector4[] GenerateValues() {
-        /*
         if(generationType == GenerationType.noise) {
-            return DensityFunction.GenerateNoiseValues(size, gridSize, center);
+            return DensityFunction.GenerateNoiseValues(size, gridSize, center, 20, 8, 0.387f, 2, 1000);
         } else {
             return new Vector4[0];
-        }*/
+        }
         return new Vector4[size.x * size.y * size.z];
     }
 
     private void SetMaterialValues() {
         Material mat = gameObject.GetComponent<MeshRenderer>().sharedMaterial;
-        mat.SetFloatArray("values", dotValues);
-        mat.SetFloat("gridSize", gridSize);
-        mat.SetVector("size", new Vector4(size.x, size.y, size.z));
-        mat.SetVector("center", new Vector4(center.x, center.y, center.z));
         mat.SetFloat("max", max);
         mat.SetFloat("min", min);
-    }
-
-    private void GetPointValues(Vector4[] points) {
-        //getting just the values
-        //is 1023 elements long just to prevent the shader capping the size of the array when we pass in an array larger than the previous one
-        dotValues = new float[1023];
-        for (int i = 0; i < points.Length; i++) {
-            dotValues[i] = points[i].w;
-        }
     }
 
     private void OnValidate() {
@@ -121,17 +110,6 @@ public class DotTester : MonoBehaviour {
         }
         if (size.z < 2) {
             size.z = 2;
-        }
-
-        //clamping the values because shaders can only hold so many values in their arrays
-        while (size.x * size.y * size.z > 1023) {
-            if (size.x > size.y && size.x > size.z && size.x > 2) {
-                size.x--;
-            } else if (size.y >= size.x && size.y > size.z && size.y > 2) {
-                size.y--;
-            } else {
-                size.z--;
-            }
         }
     }
 }
