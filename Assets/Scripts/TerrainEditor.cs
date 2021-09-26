@@ -11,6 +11,7 @@ public class TerrainEditor : MonoBehaviour {
     public float surfaceLevel = 0.5f;
     [Min(0)]
     public float brushSize = 10f;
+    public bool useFlatShading = true;
     public GameObject brush;
     public Camera cam;
     public Material meshMaterial;
@@ -44,7 +45,7 @@ public class TerrainEditor : MonoBehaviour {
             rayDistance = Mathf.Sqrt(bounds.SqrDistance(Camera.current.transform.position));
         }
 
-        terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, true);
+        terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, useFlatShading, true);
         CreateChunks();
     }
 
@@ -95,7 +96,7 @@ public class TerrainEditor : MonoBehaviour {
         }
 
         if (valuesChanged) {
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel);
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, useFlatShading);
             CreateChunks();
         } else if(valuesChangedLastFrame) {
             ChunkGenerator.DestroyBuffers();

@@ -24,6 +24,9 @@ public class TerrainChunk {
         mesh.vertices = data.vertices;
         mesh.triangles = data.triangles;
         mesh.RecalculateNormals();
+        if (data.hasNormals) {
+            mesh.normals = data.normals;
+        }
         filter.sharedMesh = mesh;
         renderer = gameObject.AddComponent<MeshRenderer>();
         renderer.sharedMaterial = mat;
@@ -41,10 +44,21 @@ public class TerrainChunk {
 public struct ChunkData {
     public Vector3[] vertices;
     public int[] triangles;
+    public bool hasNormals;
+    public Vector3[] normals;
 
     public ChunkData(Vector3[] vertices, int[] triangles) {
         this.vertices = vertices;
         this.triangles = triangles;
+        hasNormals = false;
+        normals = new Vector3[0];
+    }
+
+    public ChunkData(Vector3[] vertices, int[] triangles, Vector3[] normals) {
+        this.vertices = vertices;
+        this.triangles = triangles;
+        hasNormals = true;
+        this.normals = normals;
     }
 }
 

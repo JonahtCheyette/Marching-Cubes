@@ -71,9 +71,9 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _MinY2: 5.49
-    - _MinY3: 5.5
-    - _MinY4: 7
+    - _MinY2: 0.26
+    - _MinY3: 0.26
+    - _MinY4: 0.91
     - _MinY5: 8.57
     - _MinY6: 9.82
     - _MinY7: 13.01

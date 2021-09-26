@@ -13,6 +13,7 @@ public class HandlerTemplate : MonoBehaviour {
     public bool AutoUpdate = false;
     public bool showMinAndMaxValues = false;
     public bool usePercentageSurfaceLevel = true;
+    public bool useFlatShading = true;
 
     private List<TerrainChunk> chunks = new List<TerrainChunk>();
     private ChunkData[] terrainChunkData;
@@ -36,9 +37,9 @@ public class HandlerTemplate : MonoBehaviour {
 
         if (usePercentageSurfaceLevel) {
             SetIsoLevel();
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, isoLevel);
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, isoLevel, useFlatShading);
         } else {
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel);
+            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, useFlatShading);
         }
 
         CreateChunks();
@@ -51,7 +52,9 @@ public class HandlerTemplate : MonoBehaviour {
         chunks.Clear();
 
         for (int i = 0; i < terrainChunkData.Length; i++) {
-            chunks.Add(new TerrainChunk(terrainChunkData[i], gameObject, meshMaterial));
+            if (terrainChunkData[i].vertices.Length > 0) {
+                chunks.Add(new TerrainChunk(terrainChunkData[i], gameObject, meshMaterial));
+            }
         }
     }
 
