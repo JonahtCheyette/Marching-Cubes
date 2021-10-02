@@ -56,9 +56,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Blend2: 0.1
+    - _Blend2: 0.61
     - _Blend3: 0
-    - _Blend4: 1.47
+    - _Blend4: 0.79
     - _Blend5: 3.2
     - _Blend6: 4.53
     - _Blend7: 4.75
@@ -71,10 +71,10 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _MinY2: 0.26
-    - _MinY3: 0.26
-    - _MinY4: 0.91
-    - _MinY5: 8.57
+    - _MinY2: 0.35
+    - _MinY3: 0.5
+    - _MinY4: 1.98
+    - _MinY5: 3.7
     - _MinY6: 9.82
     - _MinY7: 13.01
     - _MinY8: 28.9

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8167904e85d0848b6becb448189004, type: 3}
+  m_Name: Default Overthought Terrain Settings
+  m_EditorClassIdentifier: 
+  seed: 0
+  scale: 1
+  octaves: 8
+  persistance: 0.5
+  lacunarity: 2
+  noiseStrength: 0.5
+  heightScale: 20
+  terrainScale: 1
+  terrainOctaves: 8
+  terrainPersistance: 0.5
+  terrainLacunarity: 2
+  floorHeight: 0
+  floorStrength: 0
+  useTerracing: 0
+  terraceHeight: 0

@@ -3,43 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WarpedNoiseHandler : HandlerTemplate {
-    [Header("Terrain Settings")]
-    [Min(float.Epsilon)]
-    public float scale = 1;
-    [Range(1, 8)]
-    public int octaves = 8;
-    [Range(0, 1)]
-    public float persistance = 0.5f;
-    [Min(1)]
-    public float lacunarity = 2;
-    public int seed = 0;
-    public float amplitude = 0;
-    public float floorHeight = 0;
-    [Min(0)]
-    public float floorStrength = 10;
-
-    public WarpSettings[] warpSettings;
+    public WarpedNoiseSettings settings;
 
     public override void GenerateValues() {
-        values = DensityFunction.GenerateWarpedNoiseValues(terrainSize, gridSize, center, scale, octaves, persistance, lacunarity, seed, amplitude, floorHeight, floorStrength, warpSettings);
+        values = DensityFunction.GenerateWarpedNoiseValues(marchingCubesSettings, center, settings);
     }
 
     public override void OnValidate() {
-        base.OnValidate();
-
-        if(warpSettings.Length > 3) {
-            WarpSettings[] oldSettings = new WarpSettings[3];
-            for (int i = 0; i < 3; i++) {
-                oldSettings[i] = warpSettings[i];
-            }
-            warpSettings = new WarpSettings[3];
-            for (int i = 0; i < 3; i++) {
-                warpSettings[i] = oldSettings[i];
-            }
+        if (settings != null) {
+            settings.OnValuesUpdated -= OnValidate;
+            settings.OnValuesUpdated += OnValidate;
         }
 
-        if(warpSettings.Length == 0) {
-            warpSettings = new WarpSettings[1];
+        base.OnValidate();
+    }
+
+    protected override void UpdateChunksIfAutoUpdateIsOn() {
+        UnityEditor.EditorApplication.delayCall -= UpdateChunksIfAutoUpdateIsOn;
+        if (marchingCubesSettings != null && settings != null) {
+            if (AutoUpdate) {
+                GenerateChunks();
+            }
         }
     }
 }

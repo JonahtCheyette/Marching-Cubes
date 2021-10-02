@@ -1,53 +1,55 @@
-﻿//I'm shelving this for now. I will come bach to it once I have an Idea of how to fix it. 
-
-//As of writing, the problem is that this needs to have the variables in it in order to run every kind of density function,
-//and I can't figure out a way to do this without having a fuck ton of variables that would need to be assigned in the editor
-
-//so for instance, as of writing, there's only one kind of density function, and also in our Generate Values function we currently have an error
-//where we aren't passing in all the necessary values because they aren't declared in this class. I would like to avoid having to declare and set new variables
-//for every new kind of density function we have
-
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DotTester : MonoBehaviour {
-    public Vector3Int size;
-
+    public Vector3 center;
     [Range(0, 1)]
     public float dotSize;
-
-    public float gridSize;
-
-    public Vector3 center;
-
-    public GenerationType generationType;
+    public bool autoUpdate = false;
+    public bool showMinAndMaxValues = false;
+    public MarchingCubeSettings marchingCubeSettings;
+    public NoiseSettings settings;
 
     private Vector4[] points;
 
-    private Mesh[] meshes;
     private Vector3[] meshPositions;
+    float[] values;
+
+    private Vector3[] sphereVertices;
+    private int[] sphereTriangles;
 
     private float min;
     private float max;
-
-    public enum GenerationType {
-        noise
-    }
+    private Material mat;
 
     public void TestWithDots() {
+        SetUpMeshVetsAndTriangles();
         //generating the values and positions
         points = GenerateValues();
 
-        CreateMeshes();
+        if (marchingCubeSettings != null && settings != null) {
+            CreateMeshes();
+            FindMinAndMaxValue();
+            SetUpMaterial();
+            SetMaterialValues();
+            //applying the meshes
+            AssignMeshes();
+        }
+    }
 
-        FindMinAndMaxValue();
+    private void SetUpMeshVetsAndTriangles() {
+        if(sphereVertices == null || sphereTriangles == null || sphereVertices.Length != 12 || sphereTriangles.Length != 60) {
+            Mesh sphere = IcoSphere.Create(1);
+            sphereVertices = sphere.vertices;
+            sphereTriangles = sphere.triangles;
+        }
+    }
 
-        SetMaterialValues();
-
-        //applying the mesh
-        gameObject.GetComponent<MeshFilter>().sharedMesh = Utility.CombineMeshes(meshes, meshPositions);
+    private void SetUpMaterial() {
+        if (mat == null) {
+            mat = new Material(Shader.Find("Unlit/DotShader"));
+        }
     }
 
     private void FindMinAndMaxValue() {
@@ -61,55 +63,118 @@ public class DotTester : MonoBehaviour {
                 max = points[i].w;
             }
         }
+
+        if (showMinAndMaxValues) {
+            print("Min: " + min);
+            print("Max: " + max);
+        }
     }
 
     private void CreateMeshes() {
-        meshes = new Mesh[points.Length];
         meshPositions = new Vector3[points.Length];
-        Vector2[] uvs = new Vector2[12];
+        values = new float[points.Length];
 
-        for (int x = 0; x < size.x; x++) {
-            for (int y = 0; y < size.y; y++) {
-                for (int z = 0; z < size.z; z++) {
-                    int i = x + (y * size.x) + (z * size.x * size.y);
-                    //creating the icospheres and setting their positions
-                    meshes[i] = IcoSphere.Create(dotSize);
-
-                    for(int j = 0; j < 12; j++) {
-                        uvs[j] = Vector2.one * points[i].w;
-                    }
-                    meshes[i].uv = uvs;
-
-                    meshPositions[i] = Utility.CalculatePointPosition(new Vector3Int(x, y, z), center, gridSize, size);
+        for (int x = 0; x < marchingCubeSettings.size.x; x++) {
+            for (int y = 0; y < marchingCubeSettings.size.y; y++) {
+                for (int z = 0; z < marchingCubeSettings.size.z; z++) {
+                    int i = x + (y * marchingCubeSettings.size.x) + (z * marchingCubeSettings.size.x * marchingCubeSettings.size.y);
+                    values[i] = points[i].w;
+                    meshPositions[i] = Utility.CalculatePointPosition(new Vector3Int(x, y, z), center, marchingCubeSettings.gridSize, marchingCubeSettings.size);
                 }
             }
+        }
+
+
+    }
+
+    private void AssignMeshes() {
+        EmptyChildren();
+
+        int numIcoSpheresPerMesh = Mathf.FloorToInt(65535f / 12f);
+        int numMeshes = Mathf.CeilToInt(points.Length / (float)numIcoSpheresPerMesh);
+
+        int startIndex = 0;
+
+        for (int i = 0; i < numMeshes; i++) {
+            GameObject newChild = new GameObject("Dots");
+            MeshRenderer renderer = newChild.AddComponent<MeshRenderer>();
+            MeshFilter filter = newChild.AddComponent<MeshFilter>();
+            Mesh mesh = new Mesh();
+
+            int numSpheres = i != numMeshes - 1 ? numIcoSpheresPerMesh : points.Length - startIndex;
+
+            Vector3[] meshVertices = new Vector3[numSpheres * 12];
+            Vector2[] meshUvs = new Vector2[numSpheres * 12];
+            int[] meshTriangles = new int[numSpheres * 60];
+            for (int j = startIndex; j < startIndex + numSpheres; j++) {
+                int vertexStartIndex = (j - startIndex) * 12;
+                int triangleStartIndex = (j - startIndex) * 60;
+                for (int k = 0; k < 12; k++) {
+                    meshVertices[vertexStartIndex + k] = meshPositions[j] + sphereVertices[k] * dotSize;
+                    meshUvs[vertexStartIndex + k] = Vector2.one * values[j];
+                }
+                for (int k = 0; k < 60; k++) {
+                    meshTriangles[triangleStartIndex + k] = sphereTriangles[k] + vertexStartIndex;
+                }
+            }
+
+            mesh.vertices = meshVertices;
+            mesh.uv = meshUvs;
+            mesh.triangles = meshTriangles;
+
+            filter.sharedMesh = mesh;
+            renderer.sharedMaterial = mat;
+            newChild.transform.parent = gameObject.transform;
+
+            startIndex += numIcoSpheresPerMesh;
+        }
+    }
+
+    private void EmptyChildren() {
+        for (int i = gameObject.transform.childCount - 1; i >= 0; i--) {
+            DestroyImmediate(gameObject.transform.GetChild(i).gameObject);
         }
     }
 
     private Vector4[] GenerateValues() {
-        if(generationType == GenerationType.noise) {
-            return DensityFunction.GenerateNoiseValues(size, gridSize, center, 20, 8, 0.387f, 2, 1000);
+        if (marchingCubeSettings != null) {
+            if (settings != null) {
+                System.Type type = settings.GetType();
+                if (type.Equals(typeof(PureNoiseSettings))) {
+                    return DensityFunction.GenerateNoiseValues(marchingCubeSettings, center, (PureNoiseSettings)settings);
+                } else if (type.Equals(typeof(BestTerrainSettings))) {
+                    return DensityFunction.GenerateBestTerrainValues(marchingCubeSettings, center, (BestTerrainSettings)settings);
+                } else if (type.Equals(typeof(ExpierementalTerrainSettings))) {
+                    return DensityFunction.GenerateExpierementalTerrainValues(marchingCubeSettings, center, (ExpierementalTerrainSettings)settings);
+                } else if (type.Equals(typeof(OverthoughtTerrainSettings))) {
+                    return DensityFunction.GenerateOverthoughtTerrainValues(marchingCubeSettings, center, (OverthoughtTerrainSettings)settings);
+                } else if (type.Equals(typeof(SphericalNoiseSettings))) {
+                    return DensityFunction.GenerateSphericalNoiseValues(marchingCubeSettings, center, (SphericalNoiseSettings)settings);
+                } else if (type.Equals(typeof(WarpedNoiseSettings))) {
+                    return DensityFunction.GenerateWarpedNoiseValues(marchingCubeSettings, center, (WarpedNoiseSettings)settings);
+                } else {
+                    print("the type of noiseSettings put into the dotTester has not yet been implemented");
+                    return new Vector4[marchingCubeSettings.size.x * marchingCubeSettings.size.y * marchingCubeSettings.size.z];
+                }
+            } else {
+                print("no NoiseSettings has been put into the dotTester");
+                return new Vector4[marchingCubeSettings.size.x * marchingCubeSettings.size.y * marchingCubeSettings.size.z];
+            }
         } else {
+            print("no marchingCubeSettings has been put into the dotTester");
             return new Vector4[0];
         }
-        return new Vector4[size.x * size.y * size.z];
     }
 
     private void SetMaterialValues() {
-        Material mat = gameObject.GetComponent<MeshRenderer>().sharedMaterial;
         mat.SetFloat("max", max);
         mat.SetFloat("min", min);
     }
 
     private void OnValidate() {
-        if(size.x < 2) {
-            size.x = 2;
-        }
-        if (size.y < 2) {
-            size.y = 2;
-        }
-        if (size.z < 2) {
-            size.z = 2;
+        if (marchingCubeSettings != null && autoUpdate) {
+            marchingCubeSettings.OnValuesUpdated -= TestWithDots;
+            marchingCubeSettings.OnValuesUpdated += TestWithDots;
         }
     }
 }

@@ -54,6 +54,31 @@ public static class Utility {
         return finalMesh;
     }
 
+    /*
+    //basically just for the dot tester script
+    //same as above, but assuming it's just one mesh being copied at every position, and also assigns uvs
+    public static Mesh CombineMeshes(Mesh[] mesh, Vector3[] positions, float[] pointValues) {
+        CombineInstance[] combiners = new CombineInstance[positions.Length];
+
+        for (int i = 0; i < positions.Length; i++) {
+            combiners[i].subMeshIndex = 0;
+            combiners[i].mesh = mesh[0];
+            Vector2[] uvs = new Vector2[12];
+            for (int j = 0; j < 12; j++) {
+                uvs[j] = Vector2.one * pointValues[i];
+            }
+            combiners[i].mesh.uv = uvs;
+            Matrix4x4 position = Matrix4x4.identity;
+            position.SetColumn(3, new Vector4(positions[i].x, positions[i].y, positions[i].z, 0));
+            combiners[i].transform = position;
+        }
+
+        Mesh finalMesh = new Mesh();
+        finalMesh.CombineMeshes(combiners);
+
+        return finalMesh;
+    }*/
+
     public static float Interpolate(float min, float max, float percentage) {
         return min + ((max - min) * percentage);
     }

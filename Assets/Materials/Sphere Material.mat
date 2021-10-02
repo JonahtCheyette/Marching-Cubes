@@ -56,13 +56,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Blend2: 2.2
-    - _Blend3: 1.9
-    - _Blend4: 0
-    - _Blend5: 0
-    - _Blend6: 0
-    - _Blend7: 0
-    - _Blend8: 0
+    - _Blend2: 3.5
+    - _Blend3: 0
+    - _Blend4: 1.63
+    - _Blend5: 0.92
+    - _Blend6: 1.5
+    - _Blend7: 1.29
+    - _Blend8: 2.42
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -71,13 +71,13 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _MinDst2: 33.49
-    - _MinDst3: 35.71
-    - _MinDst4: 0
-    - _MinDst5: 0
-    - _MinDst6: 0
-    - _MinDst7: 0
-    - _MinDst8: 0
+    - _MinDst2: 36.8
+    - _MinDst3: 37.8
+    - _MinDst4: 38.74
+    - _MinDst5: 39.26
+    - _MinDst6: 40.2
+    - _MinDst7: 41.66
+    - _MinDst8: 43.37
     - _MinY2: 0
     - _MinY3: 0
     - _MinY4: 0
@@ -86,7 +86,7 @@ Material:
     - _MinY7: 0
     - _MinY8: 0
     - _Mode: 0
-    - _NumLayers: 3
+    - _NumLayers: 8
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -97,12 +97,12 @@ Material:
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 0.99444574, g: 1, b: 0.07843137, a: 1}
-    - _Color2: {r: 1, g: 0.120615385, b: 0, a: 1}
-    - _Color3: {r: 0, g: 1, b: 0.9308512, a: 1}
-    - _Color4: {r: 1, g: 1, b: 1, a: 1}
-    - _Color5: {r: 1, g: 1, b: 1, a: 1}
-    - _Color6: {r: 1, g: 1, b: 1, a: 1}
-    - _Color7: {r: 1, g: 1, b: 1, a: 1}
+    - _Color1: {r: 0, g: 0.16564298, b: 0.7830189, a: 1}
+    - _Color2: {r: 0, g: 0.83679795, b: 1, a: 1}
+    - _Color3: {r: 0.990566, g: 0.9851961, b: 0.5934051, a: 1}
+    - _Color4: {r: 0.19339621, g: 1, b: 0.26026484, a: 1}
+    - _Color5: {r: 0.10057768, g: 0.7924528, b: 0.02616591, a: 1}
+    - _Color6: {r: 0.5188679, g: 0.48705053, b: 0.48705053, a: 1}
+    - _Color7: {r: 0.2830189, g: 0.27367392, b: 0.27367392, a: 1}
     - _Color8: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

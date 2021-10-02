@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HandlerTemplate : MonoBehaviour {
-    //public Vector3Int chunkSize = Vector3Int.one * 17;
-    public Vector3Int terrainSize;
-    [Min(0.0001f)]
-    public float gridSize = 1;
-    public float surfaceLevel = 0.5f;
     public Vector3 center;
     public Material meshMaterial;
     public bool AutoUpdate = false;
     public bool showMinAndMaxValues = false;
-    public bool usePercentageSurfaceLevel = true;
     public bool useFlatShading = true;
+    public MarchingCubeSettings marchingCubesSettings;
 
     private List<TerrainChunk> chunks = new List<TerrainChunk>();
     private ChunkData[] terrainChunkData;
@@ -35,11 +30,11 @@ public class HandlerTemplate : MonoBehaviour {
             PrintMinAndMaxValues();
         }
 
-        if (usePercentageSurfaceLevel) {
+        if (marchingCubesSettings.usePercentageSurfaceLevel) {
             SetIsoLevel();
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, isoLevel, useFlatShading);
+            terrainChunkData = ChunkGenerator.Generate(values, marchingCubesSettings.size, isoLevel, useFlatShading);
         } else {
-            terrainChunkData = ChunkGenerator.Generate(values, terrainSize, surfaceLevel, useFlatShading);
+            terrainChunkData = ChunkGenerator.Generate(values, marchingCubesSettings.size, marchingCubesSettings.surfaceLevel, useFlatShading);
         }
 
         CreateChunks();
@@ -71,7 +66,7 @@ public class HandlerTemplate : MonoBehaviour {
             }
         }
 
-        isoLevel = Utility.Interpolate(min, max, surfaceLevel);
+        isoLevel = Utility.Interpolate(min, max, marchingCubesSettings.surfaceLevel);
     }
 
     private void PrintMinAndMaxValues() {
@@ -92,33 +87,23 @@ public class HandlerTemplate : MonoBehaviour {
     }
 
     public virtual void OnValidate() {
-        if (terrainSize.x < 2) {
-            terrainSize.x = 2;
-        }
-        if (terrainSize.y < 2) {
-            terrainSize.y = 2;
-        }
-        if (terrainSize.z < 2) {
-            terrainSize.z = 2;
-        }
-
-        if (usePercentageSurfaceLevel) {
-            if(surfaceLevel < 0) {
-                surfaceLevel = 0;
-            } else if (surfaceLevel > 1) {
-                surfaceLevel = 1;
-            }
+        if (marchingCubesSettings != null) {
+            marchingCubesSettings.OnValuesUpdated -= OnValidate;
+            marchingCubesSettings.OnValuesUpdated += OnValidate;
         }
 
         //have to do it this way, otherwise console gets spammed with hundreds of warning messages messages, really annoying workaroud considering 
         //this has the same functionality of just having the function in OnValidate
+        //it just gets called after everything else finishes updating instead
         UnityEditor.EditorApplication.delayCall += UpdateChunksIfAutoUpdateIsOn;
     }
 
-    private void UpdateChunksIfAutoUpdateIsOn() {
+    protected virtual void UpdateChunksIfAutoUpdateIsOn() {
         UnityEditor.EditorApplication.delayCall -= UpdateChunksIfAutoUpdateIsOn;
-        if (AutoUpdate) {
-            GenerateChunks();
+        if (marchingCubesSettings != null) {
+            if (AutoUpdate) {
+                GenerateChunks();
+            }
         }
     }
 
