@@ -70,7 +70,7 @@ To create a new instance of each of these objects, go to the project menu and **
 ## Materials
 This section is just gonna be a quick overview of only my custom shaders that I made for the project. If you want to create new instances of these materials, create a new material,  navigate to the shader field in the inspector, then go to custom.  
 **Terrain Shader:** Pretty simple. Shades things based on height. You can define the # of layers (Max 8, you can use a higher number, but nothing will happen. Similarily, if you set it to a number less than 1, everything will just be drawn with the fist color in the inspector), then for each layer except the first, you can define a color, the minimum height at which that color will appear, and then how much it blends with the color below it.  
-**Sphere Shader:** The same as the terrain shader, except you define a center (the w variable is useless) and things are shaded based on how far they are from that center
+**Sphere Shader:** The same as the terrain shader, except you define a center (the w variable is useless) and things are shaded based on how far they are from that center.  
 **Normal Based Shader:** Similar to the terrain shader, except instead of shading based on height, you instead shade based on the angle between the normal vector and the down vector. So for each layer, you define the min angle (in radians) that must be between the normal vector and the down vector to be shaded that color
 
 ## Examples!
