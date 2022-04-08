@@ -18,10 +18,6 @@ If you don't get the algorithm, here's a small example in 2d:
 ![example](https://cdn.discordapp.com/attachments/647518062328938497/893741809526788157/marching_cube_explanation.jpg)  
 It's a fairly popular algorithm, so there are other explanations of it online, if this one doesn't suffice.
 
-## How To Set Up The Project
-This section is for those who haven't downloaded a unity project over github before. For those who have, this project was created in Unity 2019.4.3f1, so if it isn't working on your install try opening it up on that version.  
-Firstly, you're gonna need unity, specifically version 2019.4.3f1. There's a free personal version of unity, so download that, then go to installs in the unity hub, hit add, and select Unity 2019.4.3f1. After that clone this repository to your computer, then open up unity hub, go to **Projects>Add** and navigate to the cloned repository.
-
 ## How to use the project
 On the right side of the unity editor, you should see several objects in the scene hierarchy. Each one represents a different density function to generate meshes from, listed below  One thing to note is that each of the generators marked "terrain generators" uses a bunch of different small tricks to get the desired effects, so if you want a detailed look at how exactly those work, you're just going to have to look at the source code, as I don't want this readme to be bogged down with a bunch of technical details.  
 **Pure Noise:** 3d perlin noise  
