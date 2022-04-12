@@ -6,7 +6,7 @@ using UnityEditor;
 public class WarpedNoiseHandlerEditor : Editor {
 
     public override void OnInspectorGUI() {
-        //gets the WarpedoiseHandler reference
+        //gets the WarpednoiseHandler reference
         WarpedNoiseHandler warpedNoiseHandler = (WarpedNoiseHandler)target;
         DrawDefaultInspector();
 
